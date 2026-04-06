@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Careers - Lumivision AI</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="style.css"> 
+</head>
+<body>
+
+    <header>
+        <nav>
+            <div class="logo"><a href="index.html">LumivisionAI</a></div>
+            <div class="nav-actions">
+                <button onclick="window.location.href='pricing.html'" class="cta-button secondary">Premium Plans</button>
+                <button onclick="window.location.href='index.html'" class="cta-button">Go Back</button>
+            </div>
+        </nav>
+    </header>
+
+    <main>
+        <h1 class="main-title-h1">Innovate with Us</h1>
+        
+        <section id="page-content">
+            <div class="content-card">
+                <h2 class="section-heading">Join the Lumivision Team</h2>
+                <p class="section-subtext">Be part of the future of creative technology. We are looking for innovators, artists, and engineers.</p>
+
+                <h3>Current Openings</h3>
+                <ul>
+                    <li><i class="fas fa-briefcase"></i>Senior AI/ML Engineer - Focus on Diffusion Models (Remote)</li>
+                    <li><i class="fas fa-briefcase"></i> Product Designer - UI/UX Specialist for Web Platform (Hybrid)</li>
+                    <li><i class="fas fa-briefcase"></i> Community Manager - Discord and Social Media Expert (Remote)</li>
+                </ul>
+
+                <h3>Why Work With Us?</h3>
+                <p>We offer competitive salaries, unlimited generative credit, flexible working hours, and the chance to shape a revolutionary product in the creative industry.</p>
+                
+                <a href="mailto:support@lumivisionai.com" class="cta-button" style="display: block; width: 300px; margin: 40px auto 0; text-align: center;">Apply Today</a>
+            </div>
+        </section>
+
+    </main>
+
+    <footer>
+        <div class="footer-content">
+            <div class="footer-brand">
+                <h3>LumivisionAI</h3>
+                <p>The Future of Generative Art.</p>
+                <div class="social-links">
+                    <a href="#" aria-label="X (Twitter)"><i class="fab fa-x-twitter"></i></a>
+                    <a href="#" aria-label="Discord"><i class="fab fa-discord"></i></a>
+                    <a href="#" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+                </div>
+            </div>
+            <div class="footer-links">
+                <h4>Company</h4>
+                <ul>
+                    <li><a href="pricing.html">Pricing</a></li>
+                    <li><a href="about.html">About Us</a></li>
+                    <li><a href="careers.html">Careers</a></li>
+                </ul>
+            </div>
+            <div class="footer-links">
+                <h4>Support</h4>
+                <ul>
+                    <li><a href="faq.html">FAQ</a></li>
+                    <li><a href="contact.html">Contact</a></li> 
+                    <li><a href="terms.html">Terms & Conditions</a></li>
+                    <li><a href="#" id="openManageCookiesFooter">Manage Cookies</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2025 LumivisionAI. All rights reserved.</p>
+        </div>
+    </footer>
+    
+    <script src="script.js"></script>
+    <script>
+        document.getElementById('openManageCookiesFooter').addEventListener('click', (e) => {
+            e.preventDefault();
+            alert("This would open the Manage Cookies modal.");
+        });
+    </script>
+</body>
+</html>

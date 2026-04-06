@@ -1,0 +1,736 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pricing Plans - Lumivision AI</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+    <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+    <style>
+        /* ── Purchase Modal ── */
+        #purchaseModal {
+            align-items: flex-start;
+            padding: 20px;
+            overflow-y: auto;
+        }
+
+        #purchaseModal .modal-content {
+            max-width: 520px;
+            width: 100%;
+            margin: auto;
+            padding: 0;
+            overflow: hidden;
+            border-radius: 16px;
+            max-height: none;
+        }
+
+        .purchase-header {
+            padding: 28px 30px 20px;
+            background: linear-gradient(135deg, var(--color-card-bg), #0d1f3c);
+            border-bottom: 1px solid var(--color-border);
+            text-align: center;
+            position: relative;
+        }
+
+        .purchase-header .plan-badge {
+            display: inline-block;
+            padding: 4px 14px;
+            border-radius: 20px;
+            font-size: 0.75em;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            margin-bottom: 10px;
+        }
+
+        .purchase-header .plan-badge.pro {
+            background: rgba(76, 201, 240, 0.15);
+            color: var(--color-primary);
+            border: 1px solid var(--color-primary);
+        }
+
+        .purchase-header .plan-badge.ultimate {
+            background: rgba(247, 37, 133, 0.15);
+            color: var(--color-secondary);
+            border: 1px solid var(--color-secondary);
+        }
+
+        .purchase-header h2 {
+            font-size: 1.6em;
+            color: var(--color-text);
+            margin-bottom: 6px;
+        }
+
+        .purchase-price-display {
+            font-size: 2.8em;
+            font-weight: 900;
+            color: var(--color-primary);
+            line-height: 1;
+            margin: 10px 0 4px;
+        }
+
+        .purchase-price-display.ultimate-price {
+            color: var(--color-secondary);
+        }
+
+        .purchase-price-display span {
+            font-size: 0.35em;
+            font-weight: 400;
+            color: var(--color-subtle-text);
+        }
+
+        .purchase-trial-tag {
+            font-size: 0.82em;
+            color: #4ade80;
+            font-weight: 600;
+            margin-top: 4px;
+        }
+
+        /* Benefits list */
+        .purchase-benefits {
+    padding: 16px 30px;
+    border-bottom: 1px solid var(--color-border);
+    max-height: 220px;
+    overflow-y: auto;
+}
+
+        .purchase-benefits h4 {
+            font-size: 0.78em;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            color: var(--color-subtle-text);
+            margin-bottom: 12px;
+        }
+
+        .benefit-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+            padding: 7px 0;
+            font-size: 0.9em;
+            color: var(--color-text);
+            border-bottom: 1px solid rgba(255,255,255,0.04);
+        }
+
+        .benefit-item:last-child { border-bottom: none; }
+
+        .benefit-item i {
+            color: #4ade80;
+            font-size: 0.85em;
+            margin-top: 2px;
+            flex-shrink: 0;
+        }
+
+        .benefit-item i.fa-crown {
+            color: #fbbf24;
+        }
+
+        .benefit-desc {
+            font-size: 0.78em;
+            color: var(--color-subtle-text);
+            margin-top: 2px;
+        }
+
+        /* Payment form */
+        .purchase-form {
+    padding: 16px 30px 20px;
+    max-height: 360px;
+    overflow-y: auto;
+}
+
+        .purchase-form h4 {
+            font-size: 0.78em;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            color: var(--color-subtle-text);
+            margin-bottom: 14px;
+        }
+
+        .payment-methods {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 16px;
+        }
+
+        .pay-method {
+            flex: 1;
+            padding: 10px 8px;
+            border-radius: 8px;
+            border: 1px solid var(--color-border);
+            background: var(--color-card-bg);
+            color: var(--color-subtle-text);
+            cursor: pointer;
+            text-align: center;
+            font-size: 0.82em;
+            font-weight: 600;
+            transition: all 0.2s;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .pay-method i { font-size: 1.3em; }
+        .pay-method:hover,
+        .pay-method.active {
+            border-color: var(--color-primary);
+            color: var(--color-primary);
+            background: rgba(76, 201, 240, 0.08);
+        }
+
+        .form-row {
+            margin-bottom: 12px;
+        }
+
+        .form-row label {
+            display: block;
+            font-size: 0.78em;
+            font-weight: 600;
+            color: var(--color-subtle-text);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: 5px;
+        }
+
+        .form-row input {
+            width: 100%;
+            padding: 10px 12px;
+            border: 1px solid var(--color-border);
+            background: var(--color-card-bg);
+            color: var(--color-text);
+            border-radius: 8px;
+            font-size: 0.92em;
+            outline: none;
+            transition: border-color 0.2s, box-shadow 0.2s;
+            box-sizing: border-box;
+        }
+
+        .form-row input:focus {
+            border-color: var(--color-primary);
+            box-shadow: 0 0 0 3px rgba(76, 201, 240, 0.1);
+        }
+
+        .form-row input::placeholder { color: rgba(255,255,255,0.2); }
+
+        .form-row-split {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+        }
+
+        .purchase-total {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 0;
+            border-top: 1px solid var(--color-border);
+            margin-top: 4px;
+            margin-bottom: 14px;
+        }
+
+        .purchase-total .label {
+            font-size: 0.88em;
+            color: var(--color-subtle-text);
+        }
+
+        .purchase-total .amount {
+            font-size: 1.3em;
+            font-weight: 800;
+            color: var(--color-primary);
+        }
+
+        .purchase-total .amount.ultimate { color: var(--color-secondary); }
+
+        .purchase-submit-btn {
+            width: 100%;
+            padding: 14px;
+            font-size: 1em;
+            font-weight: 700;
+            letter-spacing: 0.05em;
+            border-radius: 8px;
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .purchase-submit-btn.pro-btn {
+            background: var(--color-primary);
+            color: var(--color-bg);
+            box-shadow: 0 0 15px rgba(76, 201, 240, 0.4);
+        }
+
+        .purchase-submit-btn.pro-btn:hover {
+            box-shadow: 0 0 25px rgba(76, 201, 240, 0.6);
+            transform: translateY(-1px);
+        }
+
+        .purchase-submit-btn.ultimate-btn {
+            background: var(--color-secondary);
+            color: #fff;
+            box-shadow: 0 0 15px rgba(247, 37, 133, 0.4);
+        }
+
+        .purchase-submit-btn.ultimate-btn:hover {
+            box-shadow: 0 0 25px rgba(247, 37, 133, 0.6);
+            transform: translateY(-1px);
+        }
+
+        .purchase-secure {
+            text-align: center;
+            font-size: 0.75em;
+            color: var(--color-subtle-text);
+            margin-top: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 5px;
+        }
+
+        /* Success screen */
+        .purchase-success {
+            padding: 40px 30px;
+            text-align: center;
+        }
+
+        .purchase-success .success-icon {
+            width: 70px;
+            height: 70px;
+            border-radius: 50%;
+            background: rgba(74, 222, 128, 0.15);
+            border: 2px solid #4ade80;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 20px;
+            font-size: 1.8em;
+            color: #4ade80;
+            animation: successPop 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+        }
+
+        @keyframes successPop {
+            from { transform: scale(0.5); opacity: 0; }
+            to   { transform: scale(1);   opacity: 1; }
+        }
+
+        .purchase-success h3 {
+            font-size: 1.5em;
+            color: var(--color-text);
+            margin-bottom: 10px;
+        }
+
+        .purchase-success p {
+            color: var(--color-subtle-text);
+            font-size: 0.9em;
+            margin-bottom: 24px;
+            line-height: 1.6;
+        }
+
+        /* Pricing page specific */
+        .plan-card .features li i.fa-check-circle {
+            color: #4ade80;
+        }
+
+        .plan-benefits-expanded {
+            margin-top: 16px;
+            padding-top: 16px;
+            border-top: 1px solid var(--color-border);
+        }
+
+        .plan-benefits-expanded h4 {
+            font-size: 0.78em;
+            text-transform: uppercase;
+            letter-spacing: 0.07em;
+            color: var(--color-subtle-text);
+            margin-bottom: 10px;
+        }
+
+        .plan-benefits-expanded .mini-benefit {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.82em;
+            color: var(--color-subtle-text);
+            padding: 4px 0;
+        }
+
+        .plan-benefits-expanded .mini-benefit i {
+            font-size: 0.85em;
+            width: 14px;
+            text-align: center;
+        }
+
+        .pay-option-card {
+    padding: 14px 10px;
+    border-radius: 10px;
+    border: 1px solid var(--color-border);
+    background: var(--color-card-bg);
+    cursor: pointer;
+    text-align: center;
+    transition: all 0.2s;
+    color: var(--color-text);
+}
+.pay-option-card:hover,
+.pay-option-card.active {
+    border-color: var(--color-primary);
+    background: rgba(76, 201, 240, 0.08);
+}
+    </style>
+</head>
+<body>
+
+    <header>
+        <nav>
+            <div class="logo"><a href="index.html">LumivisionAI</a></div>
+            <div class="nav-actions">
+                <button onclick="window.location.href='pricing.html'" class="cta-button secondary">Premium Plans</button>
+                <button onclick="window.location.href='index.html'" class="cta-button">Go Back</button>
+            </div>
+        </nav>
+    </header>
+
+    <main>
+        <h1 class="main-title-h1">Unlock Your Creative Potential !</h1>
+        
+        <section id="page-content" class="premium-plans-section">
+            <h2 class="section-heading">Pricing Plans</h2>
+            <p class="section-subtext">Choose the plan that fits your creative demands.</p>
+            
+            <div class="pricing-grid">
+                
+                <!-- FREE -->
+                <div class="plan-card basic">
+                    <h3>Free Tier</h3>
+                    <p class="price">$0<span class="per-month">/lifetime</span></p>
+                    <ul class="features">
+                        <li><i class="fas fa-check-circle"></i> 5 Generations/Day</li>
+                        <li><i class="fas fa-check-circle"></i> Standard Quality (720p)</li>
+                        <li><i class="fas fa-check-circle"></i> 5 Free Art Styles</li>
+                        <li><i class="fas fa-check-circle"></i> Image History (last 50)</li>
+                        <li><i class="fas fa-check-circle"></i> Special Music Feature</li>
+                        <li><i class="fas fa-times-circle" style="color:var(--color-secondary)"></i> Premium Styles Access</li>
+                        <li><i class="fas fa-times-circle" style="color:var(--color-secondary)"></i> No Watermarks</li>
+                        <li><i class="fas fa-times-circle" style="color:var(--color-secondary)"></i> Priority Support</li>
+                    </ul>
+                    <button class="cta-button secondary disabled">Current Plan</button>
+                </div>
+
+                <!-- PRO -->
+                <div class="plan-card pro featured-plan">
+                    <div class="corner-ribbon">Best Seller</div>
+                    <h3>Pro Creator</h3>
+                    <p class="price">$2.80<span class="per-month">/month</span></p>
+                    <ul class="features">
+                        <li><i class="fas fa-check-circle"></i> Unlimited Generations</li>
+                        <li><i class="fas fa-check-circle"></i> High Quality (1080p)</li>
+                        <li><i class="fas fa-check-circle"></i> All Free + 4 Pro Styles</li>
+                        <li><i class="fas fa-check-circle"></i> No Watermarks</li>
+                        <li><i class="fas fa-check-circle"></i> Faster Processing</li>
+                        <li><i class="fas fa-check-circle"></i> Image History (last 500)</li>
+                        <li><i class="fas fa-check-circle"></i> Download in PNG & JPG</li>
+                        <li><i class="fas fa-check-circle"></i> Priority Email Support</li>
+                        <li><i class="fas fa-check-circle"></i> Special Music Feature</li>
+                        <li><i class="fas fa-check-circle"></i> 7-Day Free Trial</li>
+                    </ul>
+                    <div class="plan-benefits-expanded">
+                        <h4>Pro Styles Included</h4>
+                        <div class="mini-benefit"><i class="fas fa-palette" style="color:var(--color-primary)"></i> Oil Painting</div>
+                        <div class="mini-benefit"><i class="fas fa-palette" style="color:var(--color-primary)"></i> Cyberpunk City</div>
+                        <div class="mini-benefit"><i class="fas fa-palette" style="color:var(--color-primary)"></i> Steampunk</div>
+                        <div class="mini-benefit"><i class="fas fa-palette" style="color:var(--color-primary)"></i> Cinematic 4K</div>
+                    </div>
+                    <button class="cta-button" id="proPurchaseBtn" style="margin-top:20px;">Start 7-Day Free Trial</button>
+                </div>
+                
+                <!-- ULTIMATE -->
+                <div class="plan-card ultimate">
+                    <h3>Ultimate Visionary</h3>
+                    <p class="price">$7.80<span class="per-month">/month</span></p>
+                    <ul class="features">
+                        <li><i class="fas fa-check-circle"></i> Everything in Pro</li>
+                        <li><i class="fas fa-check-circle"></i> Ultra Quality (4K)</li>
+                        <li><i class="fas fa-check-circle"></i> All 10 Art Styles</li>
+                        <li><i class="fas fa-check-circle"></i> Early Access to New Models</li>
+                        <li><i class="fas fa-check-circle"></i> Unlimited Image History</li>
+                        <li><i class="fas fa-check-circle"></i> Download PNG, JPG & WebP</li>
+                        <li><i class="fas fa-check-circle"></i> Dedicated 24/7 Support</li>
+                        <li><i class="fas fa-check-circle"></i> Commercial Usage Rights</li>
+                        <li><i class="fas fa-check-circle"></i> Batch Generation (up to 4)</li>
+                        <li><i class="fas fa-check-circle"></i> Special Music Feature</li>
+                    </ul>
+                    <div class="plan-benefits-expanded">
+                        <h4>Exclusive Ultimate Styles</h4>
+                        <div class="mini-benefit"><i class="fas fa-crown" style="color:#fbbf24"></i> Anime Style</div>
+                        <div class="mini-benefit"><i class="fas fa-crown" style="color:#fbbf24"></i> Abstract Low-Poly 3D</div>
+                        <div class="mini-benefit"><i class="fas fa-crown" style="color:#fbbf24"></i> 80s Synthwave</div>
+                        <div class="mini-benefit"><i class="fas fa-crown" style="color:#fbbf24"></i> + All Pro Styles</div>
+                    </div>
+                    <button class="cta-button secondary" id="ultimatePurchaseBtn" style="margin-top:20px;">Upgrade Now</button>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="footer-content">
+            <div class="footer-brand">
+                <h3>LumivisionAI</h3>
+                <p>The Future of Generative Art.</p>
+                <div class="social-links">
+                    <a href="#" aria-label="X (Twitter)"><i class="fab fa-x-twitter"></i></a>
+                    <a href="#" aria-label="Discord"><i class="fab fa-discord"></i></a>
+                    <a href="#" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+                </div>
+            </div>
+            <div class="footer-links">
+                <h4>Company</h4>
+                <ul>
+                    <li><a href="pricing.html">Pricing</a></li>
+                    <li><a href="about.html">About Us</a></li>
+                    <li><a href="careers.html">Careers</a></li>
+                </ul>
+            </div>
+            <div class="footer-links">
+                <h4>Support</h4>
+                <ul>
+                    <li><a href="faq.html">FAQ</a></li>
+                    <li><a href="contact.html">Contact</a></li>
+                    <li><a href="terms.html">Terms & Conditions</a></li>
+                    <li><a href="#" id="openManageCookiesFooter">Manage Cookies</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2025 LumivisionAI. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <!-- ── Purchase Modal ── -->
+    <div id="purchaseModal" class="modal" style="z-index:3000;visibility:hidden;opacity:0;">
+        <div class="modal-content" id="purchaseModalContent">
+            <!-- Filled by JS -->
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+    <script>
+    const RAZORPAY_KEY = 'rzp_test_SZuwZ8RV9tmsvH'; // ← replace with your key
+
+    const planData = {
+        pro: {
+            name: 'Pro Creator',
+            price: '$2.80',
+            amount: 26000,       // in paise (₹999 = 99900 paise) — change to your price
+            currency: 'INR',
+            description: 'Pro Creator — 7-Day Free Trial',
+            badgeClass: 'pro',
+            priceClass: '',
+            btnClass: 'pro-btn',
+            planKey: 'pro',
+            benefits: [
+                { icon: 'fa-infinity',          crown: false, text: 'Unlimited Generations',       desc: 'No daily limits ever' },
+                { icon: 'fa-image',             crown: false, text: 'High Quality (1080p)',         desc: 'Crystal clear images' },
+                { icon: 'fa-palette',           crown: false, text: 'All Free + 4 Pro Styles',     desc: 'Oil Painting, Cyberpunk, Steampunk, Cinematic' },
+                { icon: 'fa-droplet-slash',     crown: false, text: 'No Watermarks',               desc: 'Clean downloads every time' },
+                { icon: 'fa-bolt',              crown: false, text: 'Faster Processing',            desc: 'Priority generation queue' },
+                { icon: 'fa-clock-rotate-left', crown: false, text: 'Image History (500)',         desc: 'Keep your last 500 generations' },
+                { icon: 'fa-download',          crown: false, text: 'Download PNG & JPG',           desc: 'Multiple format support' },
+                { icon: 'fa-headset',           crown: false, text: 'Priority Email Support',       desc: 'Response within 24 hours' },
+                { icon: 'fa-music',             crown: false, text: 'Special Music Feature',        desc: 'Themed background music player' },
+                { icon: 'fa-gift',              crown: false, text: '7-Day Free Trial',             desc: 'Cancel anytime before trial ends' },
+            ],
+        },
+        ultimate: {
+            name: 'Ultimate Visionary',
+            price: '$7.80',
+            amount: 72500,      // ₹2499 — change to your price
+            currency: 'INR',
+            description: 'Ultimate Visionary Plan',
+            badgeClass: 'ultimate',
+            priceClass: 'ultimate-price',
+            btnClass: 'ultimate-btn',
+            planKey: 'ultimate',
+            benefits: [
+                { icon: 'fa-check-double',      crown: false, text: 'Everything in Pro',           desc: 'All Pro features included' },
+                { icon: 'fa-image',             crown: true,  text: 'Ultra Quality (4K)',           desc: 'Maximum resolution generation' },
+                { icon: 'fa-palette',           crown: true,  text: 'All 10 Art Styles',           desc: 'Anime, Synthwave, Low-Poly + all Pro' },
+                { icon: 'fa-rocket',            crown: true,  text: 'Early Access to New Models',  desc: 'Try new AI models before anyone else' },
+                { icon: 'fa-clock-rotate-left', crown: true,  text: 'Unlimited Image History',     desc: 'Never lose a generation' },
+                { icon: 'fa-download',          crown: true,  text: 'PNG, JPG & WebP Downloads',  desc: 'All formats including WebP' },
+                { icon: 'fa-headset',           crown: true,  text: 'Dedicated 24/7 Support',     desc: 'Live chat support anytime' },
+                { icon: 'fa-briefcase',         crown: true,  text: 'Commercial Usage Rights',     desc: 'Use images for commercial projects' },
+                { icon: 'fa-layer-group',       crown: true,  text: 'Batch Generation (up to 4)', desc: 'Generate 4 images simultaneously' },
+                { icon: 'fa-music',             crown: false, text: 'Special Music Feature',       desc: 'Themed background music player' },
+            ],
+        }
+    };
+
+    function openPurchaseModal(planKey) {
+        const plan = planData[planKey];
+        const modal = document.getElementById('purchaseModal');
+        const content = document.getElementById('purchaseModalContent');
+
+        content.innerHTML = `
+            <span class="close-btn" id="purchaseCloseBtn">&times;</span>
+            <div class="purchase-header">
+                <div class="plan-badge ${plan.badgeClass}">${plan.name}</div>
+                <h2>Complete Your Upgrade</h2>
+                <div class="purchase-price-display ${plan.priceClass}">${plan.price}<span>/month</span></div>
+                <div class="purchase-trial-tag"><i class="fas fa-shield-check"></i> ${planKey === 'pro' ? '7-day free trial — cancel anytime' : 'Cancel anytime — no hidden fees'}</div>
+            </div>
+
+            <div class="purchase-benefits">
+                <h4>What you get</h4>
+                ${plan.benefits.map(b => `
+                    <div class="benefit-item">
+                        <i class="fas ${b.crown ? 'fa-crown' : b.icon}" style="${b.crown ? 'color:#fbbf24' : 'color:#4ade80'}"></i>
+                        <div>
+                            <div>${b.text}</div>
+                            <div class="benefit-desc">${b.desc}</div>
+                        </div>
+                    </div>
+                `).join('')}
+            </div>
+
+            <div class="purchase-form">
+                <h4>Choose Payment Method</h4>
+                <p style="font-size:0.82em;color:var(--color-subtle-text);margin-bottom:16px;">
+                    Secure payment powered by <strong style="color:var(--color-primary)">Razorpay</strong>. 
+                    Supports all UPI apps, Credit/Debit cards, Netbanking & Wallets.
+                </p>
+
+                <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:16px;">
+                    <div class="pay-option-card" data-method="upi">
+                        <i class="fas fa-mobile-screen" style="font-size:1.4em;color:var(--color-primary);"></i>
+                        <div style="font-weight:700;font-size:0.88em;margin-top:6px;">UPI</div>
+                        <div style="font-size:0.72em;color:var(--color-subtle-text);margin-top:3px;">GPay · PhonePe · Paytm · FAMPAY</div>
+                    </div>
+                    <div class="pay-option-card" data-method="card">
+                        <i class="fas fa-credit-card" style="font-size:1.4em;color:var(--color-primary);"></i>
+                        <div style="font-weight:700;font-size:0.88em;margin-top:6px;">Card</div>
+                        <div style="font-size:0.72em;color:var(--color-subtle-text);margin-top:3px;">Credit Card · Debit Card</div>
+                    </div>
+                    <div class="pay-option-card" data-method="netbanking">
+                        <i class="fas fa-building-columns" style="font-size:1.4em;color:var(--color-primary);"></i>
+                        <div style="font-weight:700;font-size:0.88em;margin-top:6px;">Netbanking</div>
+                        <div style="font-size:0.72em;color:var(--color-subtle-text);margin-top:3px;">All major banks</div>
+                    </div>
+                    <div class="pay-option-card" data-method="wallet">
+                        <i class="fas fa-wallet" style="font-size:1.4em;color:var(--color-primary);"></i>
+                        <div style="font-weight:700;font-size:0.88em;margin-top:6px;">Wallet</div>
+                        <div style="font-size:0.72em;color:var(--color-subtle-text);margin-top:3px;">Paytm · Amazon Pay</div>
+                    </div>
+                </div>
+
+                <div class="purchase-total">
+                    <div class="label">${planKey === 'pro' ? 'After 7-day trial' : 'Billed monthly'}</div>
+                    <div class="amount ${planKey === 'ultimate' ? 'ultimate' : ''}">${plan.price}/mo</div>
+                </div>
+
+                <button class="purchase-submit-btn ${plan.btnClass}" id="purchaseSubmitBtn">
+                    <i class="fas fa-lock" style="margin-right:8px;"></i>Pay Securely with Razorpay
+                </button>
+
+                <div class="purchase-secure">
+                    <i class="fas fa-shield-halved"></i>
+                    256-bit SSL · Bank-grade security · Cancel anytime
+                </div>
+            </div>
+        `;
+
+        modal.style.visibility = 'visible';
+        modal.style.opacity = '1';
+
+        // Close
+        document.getElementById('purchaseCloseBtn').addEventListener('click', () => closePurchaseModal());
+        modal.addEventListener('click', (e) => { if (e.target === modal) closePurchaseModal(); });
+
+        // Payment option highlight on click
+        document.querySelectorAll('.pay-option-card').forEach(card => {
+            card.addEventListener('click', () => {
+                document.querySelectorAll('.pay-option-card').forEach(c => c.classList.remove('active'));
+                card.classList.add('active');
+            });
+        });
+
+        // Pay button → open Razorpay
+        document.getElementById('purchaseSubmitBtn').addEventListener('click', () => {
+            const options = {
+                key: RAZORPAY_KEY,
+                amount: plan.amount,
+                currency: plan.currency,
+                name: 'LumivisionAI',
+                description: plan.description,
+                image: 'https://lumivisionai.netlify.app/favicon.ico',
+                handler: function(response) {
+                    // Payment successful — activate plan
+                    activatePlan(planKey, response.razorpay_payment_id);
+                },
+                prefill: {
+                    name: '',
+                    email: '',
+                    contact: ''
+                },
+                theme: {
+                    color: '#4cc9f0'
+                },
+                modal: {
+                    ondismiss: function() {
+                        console.log('Payment dismissed');
+                    }
+                }
+            };
+            const rzp = new Razorpay(options);
+            rzp.open();
+        });
+    }
+
+    function closePurchaseModal() {
+        const modal = document.getElementById('purchaseModal');
+        modal.style.visibility = 'hidden';
+        modal.style.opacity = '0';
+    }
+
+    function activatePlan(planKey, paymentId) {
+        // Save plan to localStorage
+        const email = localStorage.getItem('lv_user');
+        if (email) {
+            const accounts = JSON.parse(localStorage.getItem('lv_accounts') || '{}');
+            if (accounts[email]) {
+                accounts[email].plan = planKey;
+                accounts[email].planActivatedAt = Date.now();
+                accounts[email].paymentId = paymentId;
+                localStorage.setItem('lv_accounts', JSON.stringify(accounts));
+            }
+        }
+
+        // Show success screen
+        const content = document.getElementById('purchaseModalContent');
+        const plan = planData[planKey];
+        content.innerHTML = `
+            <div class="purchase-success">
+                <div class="success-icon"><i class="fas fa-check"></i></div>
+                <h3>Payment Successful! 🎉</h3>
+                <p>
+                    Welcome to <strong>${plan.name}</strong>!<br>
+                    Your plan is now active. Payment ID: <code style="font-size:0.8em;color:var(--color-primary)">${paymentId}</code>
+                </p>
+                <button class="cta-button" onclick="window.location.href='index.html'" style="width:100%;margin-bottom:10px;">
+                    <i class="fas fa-magic"></i> Start Creating
+                </button>
+                <button class="cta-button secondary" onclick="closePurchaseModal()" style="width:100%;">
+                    Close
+                </button>
+            </div>
+        `;
+    }
+
+    document.getElementById('proPurchaseBtn').addEventListener('click',      () => openPurchaseModal('pro'));
+    document.getElementById('ultimatePurchaseBtn').addEventListener('click', () => openPurchaseModal('ultimate'));
+    document.getElementById('openManageCookiesFooter').addEventListener('click', (e) => {
+        e.preventDefault();
+        alert("This would open the Manage Cookies modal.");
+    });
+</script>
+</body>
+</html>

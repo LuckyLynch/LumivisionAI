@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Terms & Conditions - Lumivision AI</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="style.css"> 
+</head>
+<body>
+
+    <header>
+        <nav>
+            <div class="logo"><a href="index.html">LumivisionAI</a></div>
+            <div class="nav-actions">
+                <button onclick="window.location.href='pricing.html'" class="cta-button secondary">Premium Plans</button>
+                <button onclick="window.location.href='index.html'" class="cta-button">Go Back</button>
+            </div>
+        </nav>
+    </header>
+
+    <main>
+        <h1 class="main-title-h1">Our Policies</h1>
+        
+        <section id="page-content">
+            <div class="content-card">
+                <h2 class="section-heading">Terms & Conditions</h2>
+
+                <h3>1. Acceptance of Terms</h3>
+                <p>By accessing and using the Lumivision AI service, you agree to be bound by these Terms and Conditions. If you do not agree, you must cease use of the service immediately.</p>
+
+                <h3>2. User Content and Copyright</h3>
+                <p>You retain ownership of the prompts you submit. Lumivision AI grants commercial usage rights for all generated images to Pro and Ultimate plan subscribers. Free tier images are licensed under a Creative Commons Attribution-NonCommercial license.</p>
+
+                <h3>3. Prohibited Use</h3>
+                <p>You agree not to use the service to generate harmful, illegal, defamatory, or non-consensual content. We reserve the right to terminate accounts for violation of this clause.</p>
+                
+                <h3>4. Service Availability</h3>
+                <p>While we strive for 24/7 uptime, the service may be subject to maintenance or unexpected outages. We are not liable for any temporary loss of service.</p>
+            </div>
+        </section>
+
+    </main>
+
+    <footer>
+        <div class="footer-content">
+            <div class="footer-brand">
+                <h3>LumivisionAI</h3>
+                <p>The Future of Generative Art.</p>
+                <div class="social-links">
+                    <a href="#" aria-label="X (Twitter)"><i class="fab fa-x-twitter"></i></a>
+                    <a href="#" aria-label="Discord"><i class="fab fa-discord"></i></a>
+                    <a href="#" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+                </div>
+            </div>
+            <div class="footer-links">
+                <h4>Company</h4>
+                <ul>
+                    <li><a href="pricing.html">Pricing</a></li>
+                    <li><a href="about.html">About Us</a></li>
+                    <li><a href="careers.html">Careers</a></li>
+                </ul>
+            </div>
+            <div class="footer-links">
+                <h4>Support</h4>
+                <ul>
+                    <li><a href="faq.html">FAQ</a></li>
+                    <li><a href="contact.html">Contact</a></li> 
+                    <li><a href="terms.html">Terms & Conditions</a></li>
+                    <li><a href="#" id="openManageCookiesFooter">Manage Cookies</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2025 LumivisionAI. All rights reserved.</p>
+        </div>
+    </footer>
+    
+    <script src="script.js"></script>
+    <script>
+        document.getElementById('openManageCookiesFooter').addEventListener('click', (e) => {
+            e.preventDefault();
+            alert("This would open the Manage Cookies modal.");
+        });
+    </script>
+</body>
+</html>

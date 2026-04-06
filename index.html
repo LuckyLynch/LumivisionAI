@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lumivision AI - Generate Art from Text</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+</head>
+<body>
+
+    <header>
+<nav>
+    <div class="logo"><a href="index.html">LumivisionAI</a></div>
+    <div class="nav-actions">
+        <button id="openPremiumBtn" onclick="window.location.href='pricing.html'" class="cta-button">Go Premium</button>
+        <button id="openLoginBtn" class="cta-button secondary">Login / Signup</button>
+    </div>
+</nav>
+    </header>
+
+    <main>
+        <h1 class="main-title-h1">
+            Turn your text into <span id="animated-h1-word">Illustration</span>
+        </h1>
+        
+        <section class="generation-controls">
+            <input type="hidden" name="recaptcha_token" id="recaptchaToken">
+            <div class="prompt-input-wrapper">
+    <input type="text" id="promptInput" placeholder=" " autocomplete="off">
+    <label for="promptInput" class="prompt-label">Enter your prompt...</label>
+    <div id="examplePromptText">A neon-lit cyberpunk street with a flying taxi...</div>
+    <button id="enhancePromptBtn" title="Enhance Prompt with AI">
+        <i class="fas fa-magic"></i> Enhance
+    </button>
+</div>
+
+<!-- Batch count (Ultimate only) -->
+<div id="batchSection" style="display:none;margin-bottom:16px;">
+    <label style="font-size:0.82em;font-weight:600;color:var(--color-subtle-text);text-transform:uppercase;letter-spacing:0.06em;display:block;margin-bottom:8px;"><i class="fas fa-layer-group"></i> Batch Generation (Ultimate)</label>
+    <div style="display:flex;gap:8px;">
+        <button class="batch-btn active" data-count="1">1</button>
+        <button class="batch-btn" data-count="2">2</button>
+        <button class="batch-btn" data-count="3">3</button>
+        <button class="batch-btn" data-count="4">4</button>
+    </div>
+</div>
+
+            <div class="options-grid">
+                <div class="styled-select-wrapper">
+                    <select id="imageStyleSelect" class="styled-select">
+                        <option value="photorealistic">Photorealistic (Default)</option>
+                        <option value="cinematic">Cinematic (Free)</option>
+                        <option value="pixel_art">Pixel Art (Free)</option>
+                        <option value="watercolor">Watercolor Sketch (Free)</option>
+                        <option value="oil_painting" data-plan-required="pro">Oil Painting (Pro)</option>
+                        <option value="cyberpunk" data-plan-required="pro">Cyberpunk (Pro)</option>
+                        <option value="steampunk" data-plan-required="pro">Steampunk (Pro)</option>
+                        <option value="anime" data-plan-required="ultimate">Anime Style (Ultimate)</option>
+                        <option value="low_poly" data-plan-required="ultimate">Abstract Low-Poly 3D (Ultimate)</option>
+                        <option value="synthwave" data-plan-required="ultimate">80s Synthwave (Ultimate)</option>
+                    </select>
+                </div>
+                <div class="styled-select-wrapper">
+                    <select id="imageQualitySelect" class="styled-select">
+                        <option value="standard">Standard (720p) (Default)</option>
+                        <option value="high" data-plan-required="Pro">High (1080p) (Pro)</option>
+                        <option value="ultra_4k" data-plan-required="ultimate">Ultra Quality 4K (Ultimate)</option>
+                    </select>
+                </div>
+                <div class="styled-select-wrapper">
+                    <select id="aspectRatioSelect" class="styled-select">
+                        <option value="1:1">Square (1:1) (Default)</option>
+                        <option value="3:4">Portrait (3:4)</option>
+                        <option value="9:16">Vertical (9:16)</option>
+                        <option value="16:9">Landscape (16:9)</option>
+                    </select>
+                </div>
+            </div>
+
+            <button id="generateBtn" class="cta-button">
+                <i class="fas fa-magic"></i> Generate Art
+            </button>
+            
+            <div id="loadingIndicator" class="loading-indicator" style="display: none;">
+                <i class="fas fa-spinner fa-spin"></i> Processing <span id="dynamicWord">Style</span>...
+            </div>
+        </section>
+
+        <section class="image-result-section">
+            <div class="result-tabs">
+                <button class="tab-button active" data-tab="result-output">Prompt</button>
+                <button class="tab-button" data-tab="user-gallery">Your Gallery (History)</button>
+            </div>
+
+            <div id="result-output" class="tab-content active">
+                <div id="imageResult" class="placeholder-image">
+                    Your generated image will appear here.
+                </div>
+            </div>
+
+            <div id="user-gallery" class="tab-content user-gallery-content">
+                <p class="gallery-placeholder-text">Your past creations will be saved here.</p>
+                <div class="gallery-grid-placeholder">
+                    <div class="gallery-item-placeholder"></div>
+                    <div class="gallery-item-placeholder"></div>
+                    <div class="gallery-item-placeholder"></div>
+                    <div class="gallery-item-placeholder"></div>
+                    <div class="gallery-item-placeholder"></div>
+                </div>
+            </div>
+        </section>
+
+        <hr class="gallery-divider">
+
+        <section class="style-gallery-container">
+            <h2 class="section-heading">Explore AI Art Styles</h2>
+            <p class="section-subtext">Find inspiration and preview the quality of our models.</p>
+
+            <div class="style-group">
+                <h3>Free Styles (Free Plan)</h3>
+                <div class="gallery-grid">
+                    <figure class="style-card">
+                        <img src="photorealism.jpg" alt="Photorealism">
+                        <figcaption>Photorealism</figcaption>
+                    </figure>
+                    <figure class="style-card">
+                        <img src="3drender.jpg" alt="3D Render">
+                        <figcaption>3D Render</figcaption>
+                    </figure>
+                    <figure class="style-card">
+                        <img src="pencilsketch.jpg" alt="Pencil Sketch">
+                        <figcaption>Pencil Sketch</figcaption>
+                    </figure>
+                    <figure class="style-card">
+                        <img src="pixelart.jpg" alt="8-bit Pixel Art">
+                        <figcaption>Pixel Art</figcaption>
+                    </figure>
+                    <figure class="style-card">
+                        <img src="watercolorpainting.jpg" alt="Watercolor Sketch">
+                        <figcaption>Watercolor Sketch</figcaption>
+                    </figure>
+                </div>
+            </div>
+            
+            <hr class="gallery-divider">
+
+            <div class="style-group" id="premium-plans">
+                <h3>Pro Styles (Pro Plan Needed)</h3>
+                <div class="gallery-grid">
+                    <figure class="style-card">
+                        <img src="cyberpunkcity.jpg" alt="Cyberpunk City">
+                        <figcaption>Cyberpunk City</figcaption>
+                    </figure>
+                    <figure class="style-card">
+                        <img src="oilpainting.jpg" alt="Classical Oil Painting">
+                        <figcaption>Oil Painting</figcaption>
+                    </figure>
+                    <figure class="style-card">
+                        <img src="anime.jpg" alt="Anime Illustration">
+                        <figcaption>Anime</figcaption>
+                    </figure>
+                    <figure class="style-card">
+                        <img src="steampunk.jpg" alt="Steampunk Engine">
+                        <figcaption>Steampunk</figcaption>
+                    </figure>
+                </div>
+            </div>
+
+            <hr class="gallery-divider">
+
+            <div class="style-group" id="premium-plans">
+                <h3>Ultimate Styles (Ultimate Plan Needed)</h3>
+                <div class="gallery-grid">
+                    <figure class="style-card">
+                        <img src="vaporwave.jpg" alt="Vaporwave Aesthetic">
+                        <figcaption>Vaporwave</figcaption>
+                    </figure>
+                    <figure class="style-card">
+                        <img src="lowpoly3d.jpg" alt="Abstract Low-Poly 3D">
+                        <figcaption>Low-Poly 3D</figcaption>
+                    </figure>
+                    <figure class="style-card">
+                        <img src="80synthwave.jpg" alt="80s Synthwave">
+                        <figcaption>80s Synthwave</figcaption>
+                    </figure>
+                </div>
+            </div>
+        </section>
+        
+        <section class="premium-plans-section">
+            <h2 class="section-heading">Ready for Unlimited Creativity?</h2>
+            <p class="section-subtext">Unlock Ultra Quality, Premium Styles, and faster generations.</p>
+            <div style="text-align: center;">
+                <button onclick="window.location.href='pricing.html'" class="cta-button" style="font-size: 1.2em; padding: 15px 30px;">
+                    See Pricing & Features
+                </button>
+            </div>
+        </section>
+
+    </main>
+
+    <footer>
+        <div class="footer-content">
+            <div class="footer-brand">
+                <h3>LumivisionAI</h3>
+                <p>The Future of Generative Art.</p>
+                <div class="social-links">
+                    <a href="#" aria-label="X (Twitter)"><i class="fab fa-x-twitter"></i></a>
+                    <a href="#" aria-label="Discord"><i class="fab fa-discord"></i></a>
+                    <a href="#" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+                </div>
+            </div>
+            <div class="footer-links">
+                <h4>Company</h4>
+                <ul>
+                    <li><a href="pricing.html">Pricing</a></li>
+                    <li><a href="about.html">About Us</a></li>
+                    <li><a href="careers.html">Careers</a></li>
+                </ul>
+            </div>
+            <div class="footer-links">
+                <h4>Support</h4>
+                <ul>
+                    <li><a href="faq.html">FAQ</a></li>
+                    <li><a href="contact.html">Contact</a></li> 
+                    <li><a href="terms.html">Terms & Conditions</a></li>
+                    <li><a href="#" id="openManageCookiesFooter">Manage Cookies</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2025 LumivisionAI. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <div id="customAlertModal" class="modal" style="z-index: 3000; visibility: hidden; opacity: 0;">
+        <div class="modal-content custom-alert-content">
+            <h3 id="customAlertTitle">Notification</h3>
+            <p id="customAlertMessage">This is a custom alert message.</p>
+            <button id="customAlertCloseBtn" class="cta-button">OK</button>
+        </div>
+    </div>
+    
+<div id="loginModal" class="modal" style="z-index: 2000; visibility: hidden; opacity: 0;">
+    <div class="modal-content">
+        <span class="close-btn" data-modal-id="loginModal">&times;</span>
+        <h2 id="modalTitle" style="text-align: center; margin-bottom: 5px;">Login</h2>
+        <p id="modalSubtitle" style="text-align:center; color: var(--color-subtle-text); font-size:0.85em; margin-bottom: 20px;">Enter your email to receive a verification code.</p>
+ 
+        <form id="authForm">
+ 
+            <!-- STEP 1 (Login): Just Email + Send Code -->
+            <div id="loginStep1" style="display: block;">
+                <input type="email" id="loginEmailInput" placeholder="Email Address" required style="width:100%; padding:10px; margin-bottom:15px; border:1px solid var(--color-border); background:var(--color-card-bg); color:var(--color-text); border-radius:5px;">
+                <button type="button" id="loginSendCodeBtn" class="cta-button" style="width:100%;">Send Verification Code</button>
+            </div>
+ 
+            <!-- STEP 2 (Login): Enter Code -->
+            <div id="loginStep2" style="display: none;">
+                <p style="font-size:0.85em; color:var(--color-subtle-text); margin-bottom:10px;">Code sent to <strong id="loginEmailDisplay"></strong></p>
+                <input type="text" id="loginCodeInput" placeholder="Enter 6-digit code" maxlength="6" style="width:100%; padding:10px; margin-bottom:15px; border:1px solid var(--color-border); background:var(--color-card-bg); color:var(--color-text); border-radius:5px; letter-spacing: 4px; font-size:1.2em; text-align:center;">
+                <button type="button" id="loginVerifyBtn" class="cta-button" style="width:100%;">Verify & Login</button>
+                <button type="button" id="loginResendBtn" style="width:100%; background:none; border:none; color:var(--color-primary); cursor:pointer; margin-top:10px; font-size:0.85em;">Resend Code</button>
+            </div>
+ 
+            <!-- STEP 1 (Signup): Email + Password + Send Code -->
+            <div id="signupStep1" style="display: none;">
+                <input type="email" id="signupEmailInput" placeholder="Email Address" required style="width:100%; padding:10px; margin-bottom:12px; border:1px solid var(--color-border); background:var(--color-card-bg); color:var(--color-text); border-radius:5px;">
+                <input type="password" id="signupPasswordInput" placeholder="Create Password" required style="width:100%; padding:10px; margin-bottom:15px; border:1px solid var(--color-border); background:var(--color-card-bg); color:var(--color-text); border-radius:5px;">
+                <button type="button" id="signupSendCodeBtn" class="cta-button" style="width:100%;">Send Verification Code</button>
+            </div>
+ 
+            <!-- STEP 2 (Signup): Enter Code -->
+            <div id="signupStep2" style="display: none;">
+                <p style="font-size:0.85em; color:var(--color-subtle-text); margin-bottom:10px;">Code sent to <strong id="signupEmailDisplay"></strong></p>
+                <input type="text" id="signupCodeInput" placeholder="Enter 6-digit code" maxlength="6" style="width:100%; padding:10px; margin-bottom:15px; border:1px solid var(--color-border); background:var(--color-card-bg); color:var(--color-text); border-radius:5px; letter-spacing: 4px; font-size:1.2em; text-align:center;">
+                <button type="button" id="signupVerifyBtn" class="cta-button" style="width:100%;">Verify & Create Account</button>
+                <button type="button" id="signupResendBtn" style="width:100%; background:none; border:none; color:var(--color-primary); cursor:pointer; margin-top:10px; font-size:0.85em;">Resend Code</button>
+            </div>
+ 
+        </form>
+ 
+        <div class="switch-auth-mode" style="text-align:center; margin-top:15px;">
+            <span style="font-size:0.9em; color:var(--color-subtle-text);" id="switchLabel">Don't have an account?</span>
+            <a href="#" id="switchtoSignup" style="font-size:0.9em; margin-left:5px;">Sign Up</a>
+        </div>
+ 
+        <div class="divider">OR</div>
+ 
+        <div class="social-login">
+            <button class="facebook-btn"><i class="fab fa-facebook-f"></i> Continue with Facebook</button>
+            <button class="google-btn"><i class="fab fa-google"></i> Continue with Google</button>
+            <button class="x-btn"><i class="fab fa-x-twitter"></i> Continue with X</button>
+        </div>
+    </div>
+</div>
+ 
+
+    <div id="manageCookiesModal" class="modal" style="z-index: 2000; visibility: hidden; opacity: 0;">
+        <div class="modal-content">
+            <span class="close-btn" data-modal-id="manageCookiesModal">&times;</span>
+            <h2 style="text-align: center; margin-bottom: 20px;">Manage Cookie Preferences</h2>
+            
+            <form id="cookiePreferencesForm">
+                <div class="cookie-option">
+                    <label>Strictly Necessary</label>
+                    <div class="cookie-desc">Required</div>
+                    <input type="checkbox" checked disabled>
+                </div>
+                <div class="cookie-option">
+                    <label for="performance-cookies">Performance & Analytics</label>
+                    <div class="cookie-desc">Optional</div>
+                    <input type="checkbox" id="performance-cookies">
+                </div>
+                <div class="cookie-option">
+                    <label for="marketing-cookies">Marketing & Targeting</label>
+                    <div class="cookie-desc">Optional</div>
+                    <input type="checkbox" id="marketing-cookies">
+                </div>
+                <button type="submit" class="cta-button" style="width: 100%;">Save Preferences</button>
+            </form>
+        </div>
+    </div>
+
+    <div id="cookiesPopup" class="cookies-popup" style="display: none;">
+        <p>We use cookies to enhance your experience. See our <a href="terms.html">Terms & Conditions</a>.</p>
+        <div class="cookie-actions">
+            <button id="acceptCookiesBtn" class="cta-button">Accept All</button>
+            <button id="manageCookiesBtn" class="cta-button secondary">Manage Cookies</button>
+        </div>
+    </div>
+
+    <div id="imageLightboxModal" class="modal" style="z-index:4000;visibility:hidden;opacity:0;">
+    <div class="image-lightbox-content">
+        <span id="lightboxClose" style="position:fixed;top:16px;right:24px;font-size:2em;color:#fff;cursor:pointer;z-index:10;line-height:1;opacity:0.8;transition:opacity 0.2s;" onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0.8'">&times;</span>
+        <div id="lightboxZoomControls" style="position:fixed;bottom:20px;left:50%;transform:translateX(-50%);display:flex;gap:10px;z-index:10;">
+            <button id="lightboxZoomIn"  style="width:40px;height:40px;border-radius:50%;background:rgba(255,255,255,0.15);border:1px solid rgba(255,255,255,0.3);color:#fff;font-size:1.2em;cursor:pointer;backdrop-filter:blur(4px);">+</button>
+            <button id="lightboxZoomOut" style="width:40px;height:40px;border-radius:50%;background:rgba(255,255,255,0.15);border:1px solid rgba(255,255,255,0.3);color:#fff;font-size:1.2em;cursor:pointer;backdrop-filter:blur(4px);">−</button>
+            <button id="lightboxZoomReset" style="height:40px;padding:0 14px;border-radius:20px;background:rgba(255,255,255,0.15);border:1px solid rgba(255,255,255,0.3);color:#fff;font-size:0.8em;cursor:pointer;backdrop-filter:blur(4px);">Reset</button>
+        </div>
+        <div id="lightboxContainer" style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;overflow:hidden;cursor:grab;">
+            <img id="lightboxImage" src="" alt="Preview" style="max-width:90vw;max-height:90vh;border-radius:8px;transform-origin:center;transition:transform 0.2s;user-select:none;-webkit-user-drag:none;">
+        </div>
+    </div>
+</div>
+
+<div id="bgm-player-container">
+    <button id="bgm-toggle-button" class="bgm-icon">
+        <i class="fas fa-headphones"></i>
+    </button>
+
+    <div id="bgm-controls" class="bgm-controls-hidden">
+        <p id="bgm-song-title">No Track</p>
+
+        <!-- Seekbar -->
+        <input type="range" id="bgm-seekbar" min="0" max="100" step="0.1" value="0" style="width:100%; margin-bottom:4px;">
+
+        <div id="bgm-time-display">
+            <span id="bgm-current-time">0:00</span> / <span id="bgm-duration">0:00</span>
+        </div>
+
+        <div class="bgm-control-row">
+            <button id="bgm-prev-btn" title="Previous"><i class="fas fa-step-backward"></i></button>
+            <button id="bgm-play-pause-btn" aria-label="Play/Pause"><i class="fas fa-play"></i></button>
+            <button id="bgm-next-btn" title="Next"><i class="fas fa-step-forward"></i></button>
+        </div>
+
+        <div class="bgm-control-row">
+            <i class="fas fa-volume-up" style="color:var(--color-primary); font-size:0.8em;"></i>
+            <input type="range" id="bgm-volume" min="0" max="1" step="0.05" value="0.5">
+            <button id="bgm-mute-btn"><i class="fas fa-volume-up"></i></button>
+            <button id="bgm-playlist-btn" title="Playlist"><i class="fas fa-list"></i></button>
+        </div>
+
+        <!-- Playlist inside the controls panel -->
+        <div id="bgm-playlist" style="display:none;">
+            <p class="bgm-playlist-title">🎵 Playlist</p>
+            <ul id="bgm-playlist-items"></ul>
+        </div>
+    </div>
+
+    <audio id="bgm-audio" preload="auto"></audio>
+</div>
+
+    <script src="script.js"></script>
+    <script src="send-code.js"></script>
+</body>
+</html>
