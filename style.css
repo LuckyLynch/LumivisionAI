@@ -1,0 +1,2000 @@
+ /* --- 0. Variables & Global Reset (Dark Blue/Teal Theme) --- */
+:root {
+    --color-bg: #0b132b; /* Deep Dark Blue Background */
+    --color-card-bg: #1c2541; /* Slightly Lighter Card/Section Blue */
+    --color-primary: #4cc9f0; /* Vibrant Teal/Cyan Accent (Primary CTA) */
+    --color-secondary: #f72585; /* Vibrant Magenta/Pink Accent (Highlights/Animated Text/Locks) */
+    --color-text: #e0faff; /* Light Blue-White text */
+    --color-subtle-text: #a4b4cb;
+    --color-border: rgba(76, 201, 240, 0.3); /* Teal border subtle */
+    --color-hover-glow: 0 0 15px rgba(76, 201, 240, 0.7), 0 0 30px rgba(76, 201, 240, 0.2); /* Teal Glow */
+    --color-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Arial', sans-serif;
+}
+
+body {
+    background-color: var(--color-bg);
+    color: var(--color-text);
+    line-height: 1.6;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+main {
+    flex-grow: 1;
+    padding: 20px;
+    max-width: 1200px;
+    margin: 0 auto;
+    width: 100%;
+}
+
+a {
+    color: var(--color-primary);
+    text-decoration: none;
+    transition: color 0.3s;
+}
+
+a:hover {
+    color: var(--color-secondary);
+}
+
+/* --- 1. Typography & General Elements --- */
+.main-title-h1 {
+    font-size: 3.5em;
+    text-align: center;
+    margin: 60px 0 40px;
+    font-weight: 900;
+    text-shadow: 0 0 5px var(--color-primary);
+}
+
+.section-heading {
+    font-size: 2.5em;
+    text-align: center;
+    margin-bottom: 20px;
+    color: var(--color-primary);
+}
+
+.section-subtext {
+    text-align: center;
+    color: var(--color-subtle-text);
+    margin-bottom: 40px;
+    font-size: 1.1em;
+}
+
+/* --- 2. H1 & Prompt Animations CSS --- */
+#animated-h1-word {
+    color: var(--color-secondary); /* Magenta for the animated word */
+    display: inline-block;
+    opacity: 0;
+    transform: translateY(10px);
+    transition: opacity 0.5s ease-out, transform 0.5s ease-out, color 0.3s;
+    text-shadow: 0 0 8px var(--color-secondary);
+}
+
+#animated-h1-word.is-visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* Prompt Input Animation/Aesthetic */
+.prompt-input-wrapper {
+    position: relative;
+    margin-bottom: 20px;
+}
+
+/* ── Enhance Prompt Button ── */
+.prompt-input-wrapper {
+    position: relative;
+}
+#enhancePromptBtn {
+    position: absolute;
+    right: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: linear-gradient(135deg, var(--color-primary), var(--color-secondary));
+    border: none;
+    border-radius: 6px;
+    color: #fff;
+    font-size: 0.8em;
+    font-weight: 700;
+    padding: 6px 12px;
+    cursor: pointer;
+    letter-spacing: 0.04em;
+    transition: opacity 0.2s, transform 0.2s;
+    z-index: 5;
+}
+#enhancePromptBtn:hover { opacity: 0.88; transform: translateY(-50%) scale(1.03); }
+#enhancePromptBtn:disabled { opacity: 0.5; cursor: not-allowed; }
+
+/* ── Batch Buttons ── */
+.batch-btn {
+    width: 44px;
+    height: 44px;
+    border-radius: 8px;
+    border: 1px solid var(--color-border);
+    background: var(--color-bg);
+    color: var(--color-subtle-text);
+    font-size: 1em;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+.batch-btn:hover { border-color: var(--color-primary); color: var(--color-primary); }
+.batch-btn.active {
+    background: var(--color-primary);
+    color: var(--color-bg);
+    border-color: var(--color-primary);
+    box-shadow: 0 0 8px rgba(76,201,240,0.4);
+}
+
+/* ── Lightbox ── */
+.image-lightbox-content {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.92);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* ── Discount Banner ── */
+#lv-discount-banner {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 99997;
+    background: linear-gradient(90deg, var(--color-secondary), #ff9a00, var(--color-secondary));
+    background-size: 200% 100%;
+    animation: discountShimmer 3s linear infinite;
+    color: #fff;
+    text-align: center;
+    padding: 10px 16px;
+    font-size: 0.9em;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 16px;
+}
+@keyframes discountShimmer {
+    0% { background-position: 0% 50%; }
+    100% { background-position: 200% 50%; }
+}
+#lv-discount-banner .lv-banner-close {
+    position: absolute;
+    right: 14px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    color: #fff;
+    font-size: 1.2em;
+    cursor: pointer;
+    opacity: 0.8;
+}
+#lv-discount-banner .lv-countdown {
+    background: rgba(0,0,0,0.25);
+    border-radius: 6px;
+    padding: 3px 10px;
+    font-size: 0.92em;
+    letter-spacing: 0.08em;
+}
+/* Push header down when banner shows */
+body.has-discount-banner header {
+    top: 42px;
+    position: sticky;
+}
+
+/* ── Batch result grid ── */
+#batch-result-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+    width: 100%;
+}
+#batch-result-grid .batch-img-wrap {
+    position: relative;
+    border-radius: 10px;
+    overflow: hidden;
+    border: 1px solid var(--color-border);
+    cursor: pointer;
+}
+#batch-result-grid img {
+    width: 100%;
+    height: auto;
+    display: block;
+    border-radius: 10px;
+}
+#batch-result-grid .batch-dl-btn {
+    position: absolute;
+    bottom: 8px;
+    right: 8px;
+    background: rgba(0,0,0,0.6);
+    border: none;
+    color: #fff;
+    border-radius: 6px;
+    padding: 5px 10px;
+    font-size: 0.75em;
+    cursor: pointer;
+    backdrop-filter: blur(4px);
+    transition: background 0.2s;
+}
+#batch-result-grid .batch-dl-btn:hover { background: var(--color-primary); color: var(--color-bg); }
+
+#promptInput {
+    width: 100%;
+    padding: 20px 25px;
+    font-size: 1.2em;
+    background: var(--color-bg);
+    color: var(--color-text);
+    border: 2px solid var(--color-border);
+    border-radius: 12px;
+    transition: border-color 0.3s, box-shadow 0.3s;
+    height: 80px;
+    box-shadow: var(--color-shadow);
+}
+
+#promptInput:focus {
+    outline: none;
+    border-color: var(--color-primary);
+    box-shadow: var(--color-hover-glow);
+}
+
+/* Placeholder text */
+#examplePromptText {
+    position: absolute;
+    top: 50%;
+    left: 25px;
+    transform: translateY(-50%);
+    font-size: 1.2em;
+    color: var(--color-subtle-text);
+    pointer-events: none;
+    transition: opacity 0.3s;
+}
+
+/* Float Label Effect */
+.prompt-label {
+    position: absolute;
+    top: 10px;
+    left: 25px;
+    font-size: 0.9em;
+    color: var(--color-subtle-text);
+    transition: all 0.3s ease;
+    opacity: 0;
+}
+
+#promptInput:focus + .prompt-label,
+#promptInput:not(:placeholder-shown) + .prompt-label {
+    opacity: 1;
+}
+
+/* --- 3. Header, Nav, CTA --- */
+header {
+    background: var(--color-card-bg);
+    padding: 15px 40px;
+    border-bottom: 1px solid var(--color-border);
+    box-shadow: var(--color-shadow);
+}
+
+nav {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.nav-actions {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 10px;
+}
+
+.logo {
+    font-size: 1.8em;
+    font-weight: bold;
+    color: var(--color-primary);
+    text-shadow: 0 0 5px var(--color-primary);
+}
+
+.logo a {
+    color: var(--color-primary);
+}
+
+.logo a:hover {
+    color: var(--color-primary);
+}
+
+.cta-button {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 6px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-left: 0px;
+}
+
+.cta-button {
+    background-color: var(--color-primary);
+    color: var(--color-bg);
+    box-shadow: 0 0 5px var(--color-primary);
+}
+
+.cta-button:hover {
+    background-color: var(--color-primary);
+    box-shadow: var(--color-hover-glow);
+    transform: translateY(-2px);
+}
+
+.cta-button.secondary {
+    background-color: transparent;
+    color: var(--primary-color);
+    border: 2px solid var(--color-primary);
+    box-shadow: none;
+}
+
+.cta-button.secondary:hover {
+    background-color: rgba(76, 201, 240, 0.1);
+    box-shadow: var(--color-hover-glow);
+}
+
+.nav-actions .cta-button {
+    padding: 8px 15px;
+    font-size: 0.9em;
+}
+
+/* --- 4. Generation Controls, Select Fixes, & Loading --- */
+.generation-controls {
+    max-width: 800px;
+    margin: 40px auto;
+    padding: 30px;
+    background: var(--color-card-bg);
+    border-radius: 15px;
+    border: 1px solid var(--color-border);
+    box-shadow: var(--color-shadow);
+}
+
+.options-grid {
+    display: flex;
+    gap: 15px;
+    margin-bottom: 20px;
+}
+
+/* FIX: Custom Styled Select with Arrow and Lock */
+.styled-select-wrapper {
+    position: relative;
+    flex-grow: 1;
+}
+
+.styled-select {
+    width: 100%;
+    padding: 12px 35px 12px 12px;
+    background: var(--color-bg);
+    color: var(--color-text);
+    border: 1px solid var(--color-border);
+    border-radius: 6px;
+    appearance: none; /* Remove default arrow */
+    cursor: pointer;
+    transition: border-color 0.3s;
+}
+
+.styled-select:focus {
+    outline: none;
+    border-color: var(--color-primary);
+}
+
+/* Custom Arrow Icon (Font Awesome) */
+.styled-select-wrapper::after {
+    content: '\f0d7'; /* Down arrow icon */
+    font-family: "Font Awesome 6 Free";
+    font-weight: 900;
+    position: absolute;
+    top: 50%;
+    right: 10px;
+    transform: translateY(-50%);
+    color: var(--color-primary);
+    pointer-events: none;
+    z-index: 10;
+}
+
+/* Lock Icon for Premium Options */
+.styled-select-wrapper[data-is-premium="true"]::before {
+    content: '\f023'; /* Lock icon */
+    font-family: "Font Awesome 6 Free";
+    font-weight: 900;
+    position: absolute;
+    top: 50%;
+    right: 25px; /* Position next to arrow */
+    transform: translateY(-50%);
+    color: var(--color-secondary); /* Show lock color */
+    font-size: 0.8em;
+    pointer-events: none;
+    z-index: 10;
+}
+
+/* Hide lock by default (only visible via JS setting data-is-premium="true") */
+.styled-select-wrapper::before {
+    content: '';
+}
+
+.generation-controls .cta-button {
+    width: 100%;
+    font-size: 1.1em;
+    padding: 15px;
+}
+
+/* Loading Indicator */
+.loading-indicator {
+    text-align: center;
+    padding: 20px;
+    color: var(--color-secondary);
+    font-weight: bold;
+    font-size: 1.1em;
+    text-shadow: 0 0 5px var(--color-secondary);
+}
+
+.loading-indicator .fa-spinner {
+    margin-right: 10px;
+}
+
+/* --- 5. Image Result Area & Gallery Tab Fixes --- */
+.image-result-section {
+    text-align: center;
+    margin: 60px 0;
+}
+
+.result-tabs {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 20px;
+    border-bottom: 2px solid var(--color-card-bg);
+}
+
+.tab-button {
+    background: transparent;
+    border: none;
+    padding: 10px 20px;
+    font-size: 1.1em;
+    color: var(--color-subtle-text);
+    cursor: pointer;
+    border-bottom: 3px solid transparent;
+    transition: all 0.3s;
+    font-weight: bold;
+}
+
+.tab-button:hover {
+    color: var(--color-primary);
+}
+
+.tab-button.active {
+    color: var(--color-primary);
+    border-bottom: 3px solid var(--color-primary);
+}
+
+/* Tab Content Styling */
+.tab-content {
+    display: none; /* Default state: hidden */
+    padding: 20px 0;
+    height: auto;
+    overflow: visible;
+}
+
+.tab-content.active {
+    display: block; /* Active state: visible */
+}
+
+.placeholder-image {
+    width: 100%;
+    max-width: 450px;
+    min-height: 100px;
+    height: auto;
+    background: var(--color-card-bg);
+    border: 2px dashed var(--color-border);
+    border-radius: 12px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    font-size: 1.2em;
+    color: var(--color-subtle-text);
+    box-shadow: var(--color-shadow);
+    padding: 16px;
+    box-sizing: border-box;
+}
+
+/* Gallery Content Styling */
+.user-gallery-content {
+    width: 100%;
+    max-width: 900px;
+    margin: 0 auto;
+    min-height: 400px;
+    background: var(--color-card-bg);
+    border-radius: 12px;
+    padding: 20px;
+    box-shadow: var(--color-shadow);
+    justify-content: flex-start;
+    align-items: center;
+}
+
+.gallery-placeholder-text {
+    color: var(--color-subtle-text);
+    margin-bottom: 20px;
+}
+
+.gallery-grid-placeholder {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 15px;
+    width: 100%;
+}
+
+.gallery-item-placeholder {
+    height: 150px;
+    background: var(--color-bg);
+    border: 1px solid var(--color-border);
+    border-radius: 8px;
+    opacity: 0.6;
+}
+
+/* --- 6. Gallery Styles (Existing) --- */
+.style-gallery-container {
+    padding: 60px 0;
+}
+
+.style-group {
+    margin-bottom: 40px;
+}
+
+.style-group h3 {
+    font-size: 1.8em;
+    margin-bottom: 20px;
+    color: var(--color-secondary);
+    text-shadow: 0 0 3px var(--color-secondary);
+}
+
+.gallery-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 15px;
+}
+
+.style-card {
+    text-align: center;
+}
+
+.gallery-grid img {
+    width: 100%;
+    height: 180px;
+    border-radius: 8px;
+    object-fit: cover;
+    transition: transform 0.3s, box-shadow 0.3s;
+    border: 1px solid var(--color-border);
+}
+
+.gallery-grid img:hover {
+    transform: scale(1.05);
+    box-shadow: var(--color-hover-glow);
+    border-color: var(--color-primary);
+}
+
+.style-card figcaption {
+    font-size: 0.9em;
+    padding: 10px 0 5px;
+    font-weight: bold;
+    color: var(--color-text);
+}
+
+.gallery-divider {
+    border: 0;
+    height: 1px;
+    background: linear-gradient(to right, transparent, rgba(76, 201, 240, 0.4), transparent);
+    margin: 40px 0;
+}
+
+/* --- 7. Premium Plans (Used for pricing.html and index.html) --- */
+.premium-plans-section {
+    padding: 60px 20px;
+    background: linear-gradient(135deg, var(--color-card-bg), #0b1a37);
+    border-radius: 15px;
+    margin: 40px auto;
+    border: 2px solid var(--color-primary);
+    box-shadow: 0 0 30px rgba(76, 201, 240, 0.3);
+}
+
+.pricing-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 30px;
+    margin-top: 40px;
+}
+
+.plan-card {
+    background: var(--color-bg);
+    padding: 30px;
+    border-radius: 10px;
+    border: 1px solid var(--color-border);
+    text-align: center;
+    transition: transform 0.3s, box-shadow 0.3s;
+    box-shadow: var(--color-shadow);
+}
+
+.plan-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.5);
+}
+
+.plan-card.featured-plan {
+    border-color: var(--color-secondary);
+    box-shadow: 0 0 20px rgba(247, 37, 133, 0.5);
+    transform: scale(1.05);
+}
+
+.plan-card h3 {
+    font-size: 1.8em;
+    color: var(--color-primary);
+    margin-bottom: 10px;
+}
+
+.plan-card .price {
+    font-size: 3em;
+    font-weight: bold;
+    color: var(--color-text);
+    margin-bottom: 20px;
+}
+
+.plan-card .per-month {
+    font-size: 0.5em;
+    font-weight: normal;
+    color: var(--color-subtle-text);
+}
+
+.plan-card ul {
+    list-style: none;
+    text-align: left;
+    margin-bottom: 30px;
+}
+
+.plan-card li {
+    padding: 10px 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    color: var(--color-subtle-text);
+}
+
+.plan-card li i {
+    margin-right: 10px;
+    color: var(--color-secondary);
+}
+
+.plan-card .cta-button {
+    width: 100%;
+}
+
+/* --- 8. Footer (Existing) --- */
+footer {
+    background: var(--color-card-bg);
+    border-top: 1px solid var(--color-border);
+    padding: 40px 20px 20px;
+    margin-top: 50px;
+    box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.2);
+}
+
+.footer-content {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 30px;
+}
+
+.footer-brand h3 {
+    color: var(--color-primary);
+    font-size: 1.8em;
+    margin-bottom: 10px;
+    text-shadow: 0 0 3px var(--color-primary);
+}
+
+.footer-brand p {
+    color: var(--color-subtle-text);
+    margin-bottom: 20px;
+}
+
+.social-links a {
+    font-size: 1.5em;
+    margin-right: 15px;
+    color: var(--color-subtle-text);
+}
+
+.social-links a:hover {
+    color: var(--color-primary);
+}
+
+.footer-links h4 {
+    color: var(--color-text);
+    margin-bottom: 15px;
+    border-bottom: 1px dashed var(--color-border);
+    padding-bottom: 5px;
+}
+
+.footer-links ul {
+    list-style: none;
+}
+
+.footer-links li {
+    margin-bottom: 8px;
+}
+
+.footer-bottom {
+    text-align: center;
+    margin-top: 40px;
+    padding-top: 20px;
+    border-top: 1px solid var(--color-border);
+}
+
+.footer-bottom p {
+    color: var(--color-subtle-text);
+    font-size: 0.9em;
+}
+
+/* --- 9. Modal & Cookie Styling Fixes --- */
+/* FIX: Modal Positioning (CSS handles centering) */
+.modal {
+    position: fixed;
+    z-index: 2000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0, 0, 0, 0.85);
+    display: flex; /* Centers content */
+    justify-content: center;
+    align-items: center;
+    transition: visibility 0.3s, opacity 0.3s;
+}
+
+.modal-content {
+    background-color: var(--color-bg);
+    padding: 30px;
+    border: 1px solid var(--color-primary);
+    width: 90%;
+    max-width: 450px;
+    border-radius: 10px;
+    position: relative;
+    box-shadow: var(--color-hover-glow);
+    animation: fadeInScale 0.3s ease-out;
+}
+
+.close-btn {
+    color: var(--color-subtle-text);
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: color 0.3s;
+}
+
+.close-btn:hover,
+.close-btn:focus {
+    color: var(--color-primary);
+}
+
+@keyframes fadeInScale {
+    from { opacity: 0; transform: scale(0.95); }
+    to { opacity: 1; transform: scale(1); }
+}
+
+.social-login button {
+    width: 100%;
+    margin-bottom: 10px;
+    padding: 12px;
+    font-size: 1em;
+    border: none;
+    border-radius: 5px;
+    color: white;
+}
+
+.facebook-btn { 
+    background-color: #3b5998;
+    cursor: pointer;
+}
+
+.google-btn { 
+    background-color: #dd4b39;
+    cursor: pointer; 
+}
+
+.x-btn { 
+    background-color: #000000;
+    cursor: pointer;
+}
+
+.divider {
+    text-align: center;
+    margin: 20px 0;
+    color: var(--color-subtle-text);
+    position: relative;
+}
+
+.divider::before, .divider::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    width: 40%;
+    height: 1px;
+    background: var(--color-border);
+}
+
+.divider::before { 
+    left: 0; 
+}
+
+.divider::after { 
+    right: 0; 
+}
+
+#authForm input {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 1px solid var(--color-border);
+    background: var(--color-card-bg);
+    color: var(--color-text);
+    border-radius: 5px;
+}
+
+#authStep2 {
+    display: flex;
+    gap: 10px;
+}
+
+#authStep2 input {
+    flex-grow: 1;
+    margin-bottom: 0;
+}
+
+.switch-auth-mode {
+    text-align: center;
+    margin-top: 15px;
+}
+
+
+/* FIX: Cookie Banner Button Spacing */
+.cookies-popup {
+    position: fixed;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: var(--color-card-bg);
+    padding: 20px;
+    border-radius: 10px;
+    border: 1px solid var(--color-border);
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.5);
+    z-index: 1500;
+    max-width: 90%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 20px;
+}
+
+.cookie-actions {
+    display: flex;
+    gap: 10px; /* Space between buttons */
+}
+
+.cookie-actions button {
+    margin-left: 0; /* Remove existing margin override */
+}
+
+/* Manage Cookies Modal specifics */
+.cookie-option {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 0;
+    border-bottom: 1px solid var(--color-border);
+}
+
+.cookie-option label {
+    flex-grow: 1;
+    font-weight: bold;
+}
+
+.cookie-option input[type="checkbox"] {
+    transform: scale(1.2);
+    margin-left: 15px;
+    accent-color: var(--color-secondary);
+}
+
+.cookie-desc {
+    font-size: 0.8em;
+    color: var(--color-subtle-text);
+    width: 150px;
+    text-align: right;
+}
+
+/* FIX: Space above Save Preferences button */
+#manageCookiesModal .cta-button {
+    margin-top: 20px;
+}
+
+/* --- 10. Page Content Card Styling --- */
+.content-card {
+    background: var(--color-card-bg);
+    padding: 40px;
+    border-radius: 15px;
+    border: 1px solid var(--color-border);
+    box-shadow: var(--color-shadow);
+    margin-bottom: 50px;
+    max-width: 900px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.content-card h3 {
+    color: var(--color-primary);
+    margin-top: 25px;
+    margin-bottom: 15px;
+    font-size: 1.6em;
+}
+
+.content-card p, .content-card ul {
+    color: var(--color-subtle-text);
+    font-size: 1.1em;
+    margin-bottom: 20px;
+}
+
+.content-card ul {
+    padding-left: 20px;
+    list-style-type: none;
+}
+
+.content-card ul li {
+    margin-bottom: 10px;
+}
+
+.content-card ul li i {
+    color: var(--color-secondary);
+    margin-right: 10px;
+}
+
+/* --- Additional Modal Styling for Image Lightbox --- */
+.modal-content.image-lightbox-content {
+    background-color: transparent; /* Transparent background */
+    border: none; /* No border */
+    box-shadow: none; /* No box shadow */
+    max-width: 95%; /* Allow it to be very wide */
+    padding: 20px;
+    position: relative;
+}
+
+/* --- BGM Player Styling --- */
+
+/* 1. Permanent Position (Bottom-Right) */
+#bgm-player-container {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    z-index: 99999; 
+    transition: all 0.3s ease-in-out;
+}
+
+/* 2. The permanent music icon button (bgm-icon) */
+.bgm-icon {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    /* Theme: Use primary color for background */
+    background-color: var(--color-primary); 
+    /* Theme: Use background color for text/icon (for contrast) */
+    color: var(--color-bg); 
+    border: none;
+    cursor: pointer;
+    font-size: 1.2em;
+    /* Theme: Use primary color for shadow */
+    box-shadow: 0 0 10px var(--color-hover-glow); 
+    z-index: 992; 
+    position: relative;
+    transition: background-color 0.2s, box-shadow 0.2s, transform 0.2s;
+}
+
+.bgm-icon:hover {
+    /* Theme: Use hover glow variable */
+    background-color: var(--color-primary);
+    box-shadow: 0 0 15px var(--color-primary); 
+    transform: translateY(-2px);
+}
+
+/* 3. The Control Panel (Matching the Theme) */
+#bgm-controls {
+    position: absolute;
+    bottom: 0; 
+    right: 60px; 
+    width: 260px;
+    padding: 10px;
+    box-sizing: border-box;
+    /* Theme: Use background color for the panel itself */
+    background-color: var(--color-bg); 
+    /* Theme: Add a subtle border matching the primary color */
+    border: 1px solid var(--color-primary);
+    border-radius: 8px;
+    /* Theme: Use a subtle shadow */
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4); 
+    /* Theme: Use primary color for text in the panel */
+    color: var(--color-primary); 
+    z-index: 991; 
+    transition: opacity 0.3s, transform 0.3s;
+    transform-origin: bottom right;
+}
+
+#bgm-song-title {
+    margin: 0 0 8px 0;
+    font-size: 0.9em;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    /* Theme: Ensure title text color contrasts with background */
+    color: var(--color-primary); 
+}
+
+.bgm-control-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 8px;
+}
+
+/* Styling for internal buttons (Play/Pause, Next) */
+#bgm-controls button {
+    background-color: var(--color-primary);
+    color: var(--color-bg);
+    border: none;
+    border-radius: 4px;
+    padding: 5px 10px;
+    cursor: pointer;
+    transition: opacity 0.2s, background-color 0.2s;
+}
+
+#bgm-controls button:hover {
+    /* Slightly darker primary color or a secondary color for hover */
+    opacity: 0.9; 
+}
+
+/* Specific styling for the mute button (if needed to adjust width) */
+#bgm-mute-btn {
+    padding: 5px 8px; /* Slightly smaller padding for icon button */
+}
+
+/* Volume Slider Styling (for basic theme match) */
+#bgm-volume {
+    -webkit-appearance: none; /* Override default slider styles */
+    appearance: none;
+    height: 6px;
+    background: var(--color-primary); /* Use primary color for the track */
+    border-radius: 3px;
+    flex-grow: 1;
+    cursor: grab;
+}
+#bgm-volume::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    background: var(--color-hover-glow, white); /* Use a bright color for the thumb */
+    cursor: grab;
+}
+
+
+/* State for Hiding/Showing Controls (remain the same) */
+.bgm-controls-hidden {
+    opacity: 0;
+    pointer-events: none; 
+    transform: scale(0.9);
+}
+
+.bgm-controls-visible {
+    opacity: 1;
+    pointer-events: auto;
+    transform: scale(1);
+}
+
+/* Volume + Seekbar shared slider style */
+#bgm-volume,
+#bgm-seekbar {
+    -webkit-appearance: none;
+    appearance: none;
+    border-radius: 3px;
+    cursor: pointer;
+    outline: none;
+    flex-grow: 1;
+}
+
+#bgm-seekbar {
+    width: 100%;
+    height: 4px;
+    margin-bottom: 4px;
+}
+
+#bgm-volume {
+    height: 4px;
+}
+
+/* Thumb for both */
+#bgm-volume::-webkit-slider-thumb,
+#bgm-seekbar::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 13px;
+    height: 13px;
+    border-radius: 50%;
+    background: var(--color-primary);
+    cursor: pointer;
+    box-shadow: 0 0 4px rgba(76, 201, 240, 0.6);
+}
+
+#bgm-volume::-moz-range-thumb,
+#bgm-seekbar::-moz-range-thumb {
+    width: 13px;
+    height: 13px;
+    border-radius: 50%;
+    background: var(--color-primary);
+    cursor: pointer;
+    border: none;
+}
+
+/* Playlist inside controls */
+#bgm-playlist {
+    margin-top: 10px;
+    border-top: 1px solid var(--color-border);
+    padding-top: 8px;
+}
+
+.bgm-playlist-title {
+    color: var(--color-primary);
+    font-size: 0.82em;
+    font-weight: bold;
+    margin-bottom: 6px;
+}
+
+#bgm-playlist-items {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    max-height: 120px;
+    overflow-y: auto;
+}
+
+#bgm-playlist-items li {
+    padding: 6px 8px;
+    font-size: 0.8em;
+    color: var(--color-subtle-text);
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background 0.2s, color 0.2s;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+#bgm-playlist-items li:hover { background: rgba(76,201,240,0.1); color: var(--color-text); }
+#bgm-playlist-items li.active-track { color: var(--color-primary); font-weight: bold; }
+
+.bgm-playlist-title {
+    color: var(--color-primary);
+    font-size: 0.85em;
+    font-weight: bold;
+    margin-bottom: 8px;
+}
+
+#bgm-playlist-items {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+#bgm-playlist-items li {
+    padding: 7px 8px;
+    font-size: 0.82em;
+    color: var(--color-subtle-text);
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background 0.2s, color 0.2s;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+#bgm-playlist-items li:hover { background: rgba(76,201,240,0.1); color: var(--color-text); }
+#bgm-playlist-items li.active-track { color: var(--color-primary); font-weight: bold; }
+
+/* --- OVERLAY MANAGEMENT (remain the same) --- */
+.modal-overlay {
+    z-index: 1000; 
+}
+
+/* --- Styling for the Container (Crucial for positioning) --- */
+.plan-card {
+    position: relative;
+    overflow: hidden; /* needed for ribbon clipping */
+}
+
+.corner-ribbon {
+    position: absolute;
+    top: 32px;
+    right: -40px;
+    background: linear-gradient(135deg, rgb(0, 119, 255), #00eeff);
+    color: white;
+    font-size: 0.75rem;
+    font-weight: 700;
+    padding: 6px 0;
+    transform: rotate(45deg);
+    box-shadow: 0 2px 8px rgba(0,0,0,0.25);
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    width: 165px;
+}
+
+/* ── Nav User Avatar Button ── */
+.lv-nav-user {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+    padding: 4px 12px 4px 4px;
+    border-radius: 25px;
+    border: 1px solid var(--color-border);
+    background: var(--color-card-bg);
+    transition: border-color 0.2s, box-shadow 0.2s;
+}
+.lv-nav-user:hover {
+    border-color: var(--color-primary);
+    box-shadow: 0 0 8px rgba(76, 201, 240, 0.2);
+}
+.lv-nav-name {
+    font-size: 0.88em;
+    font-weight: 600;
+    color: var(--color-text);
+    max-width: 100px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+/* ── Profile Popup ── */
+#lv-profile-popup {
+    position: fixed;
+    top: 60px;
+    right: 20px;
+    width: 240px;
+    background: var(--color-card-bg);
+    border: 1px solid var(--color-border);
+    border-radius: 12px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(76,201,240,0.08);
+    z-index: 99998;
+    overflow: hidden;
+    opacity: 0;
+    transform: translateY(-8px) scale(0.97);
+    transition: opacity 0.18s ease, transform 0.18s ease;
+    pointer-events: none;
+}
+#lv-profile-popup.lv-popup-visible {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+    pointer-events: auto;
+}
+.lv-profile-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 16px 14px 14px;
+}
+.lv-profile-info {
+    overflow: hidden;
+}
+.lv-profile-name {
+    font-weight: 700;
+    font-size: 0.95em;
+    color: var(--color-text);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+.lv-profile-email {
+    font-size: 0.75em;
+    color: var(--color-subtle-text);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    margin-top: 2px;
+}
+.lv-profile-divider {
+    height: 1px;
+    background: var(--color-border);
+    margin: 0;
+}
+.lv-profile-menu {
+    list-style: none;
+    padding: 6px 0;
+    margin: 0;
+}
+.lv-profile-menu li {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 16px;
+    font-size: 0.88em;
+    color: var(--color-text);
+    cursor: pointer;
+    transition: background 0.15s, color 0.15s;
+}
+.lv-profile-menu li:hover {
+    background: rgba(76, 201, 240, 0.08);
+    color: var(--color-primary);
+}
+.lv-profile-menu li i {
+    width: 16px;
+    text-align: center;
+    color: var(--color-subtle-text);
+    font-size: 0.95em;
+    transition: color 0.15s;
+}
+.lv-profile-menu li:hover i {
+    color: var(--color-primary);
+}
+.lv-logout-item {
+    color: var(--color-secondary) !important;
+}
+.lv-logout-item i {
+    color: var(--color-secondary) !important;
+}
+.lv-logout-item:hover {
+    background: rgba(247, 37, 133, 0.08) !important;
+    color: var(--color-secondary) !important;
+}
+
+/* ── Settings Sections ── */
+.lv-settings-section {
+    background: var(--color-card-bg);
+    border: 1px solid var(--color-border);
+    border-radius: 10px;
+    padding: 14px 16px;
+    margin-bottom: 14px;
+}
+.lv-settings-section h4 {
+    font-size: 0.82em;
+    font-weight: 700;
+    color: var(--color-primary);
+    text-transform: uppercase;
+    letter-spacing: 0.07em;
+    margin-bottom: 12px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+.lv-setting-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 8px 0;
+    border-bottom: 1px solid rgba(255,255,255,0.04);
+}
+.lv-setting-row:last-child { border-bottom: none; }
+.lv-setting-label {
+    font-size: 0.88em;
+    font-weight: 600;
+    color: var(--color-text);
+    margin-bottom: 2px;
+}
+.lv-setting-desc {
+    font-size: 0.76em;
+    color: var(--color-subtle-text);
+}
+.lv-setting-btn {
+    background: transparent;
+    border: 1px solid var(--color-border);
+    color: var(--color-primary);
+    padding: 5px 14px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 0.82em;
+    white-space: nowrap;
+    transition: background 0.2s, border-color 0.2s;
+    flex-shrink: 0;
+}
+.lv-setting-btn:hover {
+    background: rgba(76, 201, 240, 0.08);
+    border-color: var(--color-primary);
+}
+
+/* ── Toggle Switch ── */
+.lv-toggle {
+    position: relative;
+    display: inline-block;
+    width: 40px;
+    height: 22px;
+    flex-shrink: 0;
+}
+.lv-toggle input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+.lv-toggle-slider {
+    position: absolute;
+    cursor: pointer;
+    inset: 0;
+    background: rgba(255,255,255,0.1);
+    border-radius: 22px;
+    transition: background 0.2s;
+    border: 1px solid var(--color-border);
+}
+.lv-toggle-slider::before {
+    content: '';
+    position: absolute;
+    width: 16px;
+    height: 16px;
+    left: 2px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: var(--color-subtle-text);
+    border-radius: 50%;
+    transition: transform 0.2s, background 0.2s;
+}
+.lv-toggle input:checked + .lv-toggle-slider {
+    background: rgba(76, 201, 240, 0.2);
+    border-color: var(--color-primary);
+}
+.lv-toggle input:checked + .lv-toggle-slider::before {
+    transform: translate(18px, -50%);
+    background: var(--color-primary);
+}
+
+/* ── Custom Scrollbar (Global) ── */
+::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+}
+::-webkit-scrollbar-track {
+    background: var(--color-bg);
+    border-radius: 3px;
+}
+::-webkit-scrollbar-thumb {
+    background: var(--color-primary);
+    border-radius: 3px;
+    opacity: 0.7;
+}
+::-webkit-scrollbar-thumb:hover {
+    background: var(--color-secondary);
+}
+/* Firefox */
+* {
+    scrollbar-width: thin;
+    scrollbar-color: var(--color-primary) var(--color-bg);
+}
+
+/* RESPONSIVE CODE BELOW */
+
+/* ============================================================
+   RESPONSIVE CSS — All Devices
+   Covers: Samsung, Vivo, Oppo, Redmi, iPhone, MacBook,
+           Smart TVs, tablets, and all other brands
+   ============================================================ */
+
+/* ── Base fluid defaults ── */
+html {
+    -webkit-text-size-adjust: 100%;
+}
+
+img, video {
+    max-width: 100%;
+    height: auto;
+}
+
+/* ============================================================
+   SMART TVs (1920px+)
+   Samsung Smart TV, LG WebOS, Sony Bravia, etc.
+   ============================================================ */
+@media screen and (min-width: 1920px) {
+    main {
+        max-width: 1600px;
+    }
+    .main-title-h1 {
+        font-size: 5em;
+    }
+    .generation-controls {
+        max-width: 1100px;
+        padding: 40px;
+    }
+    .placeholder-image {
+        max-width: 900px;
+        min-height: 500px;
+    }
+    .pricing-grid {
+        grid-template-columns: repeat(3, 1fr);
+        gap: 40px;
+    }
+    .gallery-grid {
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    }
+    #bgm-controls {
+        width: 300px;
+    }
+    .section-heading { font-size: 3em; }
+    .plan-card .price { font-size: 3.5em; }
+    nav { padding: 0 60px; }
+    header { padding: 20px 60px; }
+}
+
+/* ============================================================
+   LARGE LAPTOPS / DESKTOPS (1440px - 1919px)
+   MacBook Pro 16", MacBook Pro 14", Dell XPS 15, etc.
+   ============================================================ */
+@media screen and (min-width: 1440px) and (max-width: 1919px) {
+    main { max-width: 1300px; }
+    .generation-controls { max-width: 950px; }
+    .main-title-h1 { font-size: 4em; }
+    .gallery-grid {
+        grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    }
+}
+
+/* ============================================================
+   STANDARD LAPTOPS (1024px - 1439px)
+   MacBook Air 13", MacBook Air 15", standard laptops
+   ============================================================ */
+@media screen and (min-width: 1024px) and (max-width: 1439px) {
+    main { max-width: 1100px; }
+    .main-title-h1 { font-size: 3.2em; }
+    .generation-controls { max-width: 800px; }
+    .pricing-grid {
+        grid-template-columns: repeat(3, 1fr);
+        gap: 20px;
+    }
+    .gallery-grid {
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    }
+}
+
+/* ============================================================
+   TABLETS (768px - 1023px)
+   iPad, Samsung Tab, Redmi Pad, Oppo Pad, etc.
+   ============================================================ */
+@media screen and (min-width: 768px) and (max-width: 1023px) {
+    main {
+        padding: 15px;
+        max-width: 100%;
+    }
+    .main-title-h1 {
+        font-size: 2.8em;
+        margin: 40px 0 30px;
+    }
+    .generation-controls {
+        max-width: 100%;
+        padding: 24px;
+        margin: 24px auto;
+    }
+    .options-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 12px;
+    }
+    .options-grid .styled-select-wrapper:last-child {
+        grid-column: span 2;
+    }
+    .pricing-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 20px;
+    }
+    .plan-card.featured-plan {
+        transform: scale(1.02);
+    }
+    .gallery-grid {
+        grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    }
+    .footer-content {
+        grid-template-columns: 1fr 1fr;
+    }
+    #bgm-player-container {
+        bottom: 15px;
+        right: 15px;
+    }
+    .placeholder-image {
+        max-width: 100%;
+        min-height: 300px;
+    }
+    nav {
+        padding: 0 20px;
+    }
+    header {
+        padding: 12px 20px;
+    }
+    .section-heading { font-size: 2em; }
+}
+
+/* ============================================================
+   LARGE PHONES (480px - 767px)
+   Samsung Galaxy S24+, iPhone Pro Max, Vivo X100 Pro,
+   Oppo Find X7, Redmi Note 13 Pro+, etc.
+   ============================================================ */
+@media screen and (min-width: 480px) and (max-width: 767px) {
+    main {
+        padding: 12px;
+    }
+    .main-title-h1 {
+        font-size: 2.2em;
+        margin: 30px 0 24px;
+    }
+    header {
+        padding: 10px 16px;
+    }
+    nav {
+        padding: 0;
+    }
+    .logo {
+        font-size: 1.4em;
+    }
+    .nav-actions {
+        gap: 6px;
+    }
+    .nav-actions .cta-button {
+        padding: 7px 10px;
+        font-size: 0.8em;
+    }
+    .lv-nav-name {
+        display: none; /* hide name, show only avatar on small screens */
+    }
+    .generation-controls {
+        padding: 18px;
+        margin: 16px auto;
+        border-radius: 12px;
+    }
+    .options-grid {
+        flex-direction: column;
+        gap: 10px;
+    }
+    #promptInput {
+        font-size: 1em;
+        height: 70px;
+        padding: 14px 18px;
+    }
+    #examplePromptText {
+        font-size: 1em;
+        left: 18px;
+    }
+    .generation-controls .cta-button {
+        font-size: 1em;
+        padding: 14px;
+    }
+    .placeholder-image {
+        max-width: 100%;
+        min-height: 260px;
+    }
+    .pricing-grid {
+        grid-template-columns: 1fr;
+        gap: 16px;
+    }
+    .plan-card.featured-plan {
+        transform: scale(1);
+    }
+    .premium-plans-section {
+        padding: 40px 16px;
+        margin: 20px 0;
+    }
+    .gallery-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 10px;
+    }
+    .gallery-grid img {
+        height: 140px;
+    }
+    .section-heading { font-size: 1.8em; }
+    .section-subtext { font-size: 1em; }
+    .footer-content {
+        flex-direction: column;
+        gap: 20px;
+    }
+    .footer-links { width: 100%; }
+    .footer-links ul { padding-left: 0; }
+    .footer-brand { text-align: center; }
+    .footer-brand .social-links { justify-content: center; display: flex; }
+    .cookies-popup {
+        flex-direction: column;
+        text-align: center;
+        padding: 16px;
+        width: 92%;
+    }
+    .cookie-actions { margin-top: 10px; flex-wrap: wrap; justify-content: center; }
+    #bgm-controls { width: 210px; }
+    #bgm-player-container { bottom: 12px; right: 12px; }
+    .modal-content { padding: 20px; }
+    .result-tabs { gap: 0; }
+    .tab-button { font-size: 0.95em; padding: 8px 14px; }
+    .style-group h3 { font-size: 1.4em; }
+}
+
+/* ============================================================
+   SMALL PHONES (360px - 479px)
+   Samsung Galaxy A series, Redmi A series, Vivo Y series,
+   Oppo A series, iPhone SE, iPhone 12 mini, etc.
+   ============================================================ */
+@media screen and (max-width: 479px) {
+    main { padding: 10px; }
+
+    .main-title-h1 {
+        font-size: 1.8em;
+        margin: 24px 0 20px;
+        line-height: 1.2;
+    }
+
+    header { padding: 10px 12px; }
+    nav { gap: 8px; }
+
+    .logo { font-size: 1.2em; }
+
+    .nav-actions {
+        gap: 5px;
+    }
+    .nav-actions .cta-button {
+        padding: 6px 8px;
+        font-size: 0.75em;
+        letter-spacing: 0.5px;
+    }
+    .lv-nav-name { display: none; }
+
+    .generation-controls {
+        padding: 14px;
+        margin: 12px auto;
+        border-radius: 10px;
+    }
+
+    #promptInput {
+        font-size: 0.95em;
+        height: 65px;
+        padding: 12px 14px;
+    }
+    #examplePromptText {
+        font-size: 0.9em;
+        left: 14px;
+    }
+
+    .options-grid {
+        flex-direction: column;
+        gap: 8px;
+    }
+
+    .styled-select {
+        padding: 10px 30px 10px 10px;
+        font-size: 0.9em;
+    }
+
+    .generation-controls .cta-button {
+        font-size: 0.95em;
+        padding: 12px;
+    }
+
+    .placeholder-image {
+        max-width: 100%;
+        min-height: 220px;
+        font-size: 1em;
+    }
+
+    .result-tabs { gap: 0; }
+    .tab-button {
+        font-size: 0.88em;
+        padding: 8px 10px;
+    }
+
+    .section-heading { font-size: 1.6em; }
+    .section-subtext { font-size: 0.9em; }
+
+    .style-group h3 { font-size: 1.2em; }
+    .gallery-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 8px;
+    }
+    .gallery-grid img { height: 120px; }
+
+    .pricing-grid {
+        grid-template-columns: 1fr;
+        gap: 14px;
+    }
+    .plan-card {
+        padding: 20px 16px;
+    }
+    .plan-card.featured-plan { transform: scale(1); }
+    .plan-card h3 { font-size: 1.5em; }
+    .plan-card .price { font-size: 2.5em; }
+    .premium-plans-section { padding: 30px 12px; margin: 16px 0; }
+
+    .footer-content { flex-direction: column; gap: 16px; text-align: center; }
+    .footer-brand .social-links { justify-content: center; display: flex; }
+    .footer-links { width: 100%; }
+    .footer-links ul { padding-left: 0; }
+    .footer-bottom { margin-top: 24px; }
+
+    .modal-content {
+        padding: 16px;
+        width: 95%;
+        border-radius: 10px;
+    }
+
+    .cookies-popup {
+        flex-direction: column;
+        width: 94%;
+        padding: 14px;
+        gap: 12px;
+        bottom: 10px;
+    }
+    .cookie-actions {
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 8px;
+        margin-top: 0;
+    }
+
+    /* BGM Player */
+    #bgm-player-container { bottom: 10px; right: 10px; }
+    .bgm-icon { width: 44px; height: 44px; font-size: 1em; }
+    #bgm-controls {
+        width: 195px;
+        right: 52px;
+        padding: 8px;
+    }
+    #bgm-song-title { font-size: 0.8em; }
+    #bgm-controls button { padding: 4px 8px; font-size: 0.85em; }
+
+    /* Profile popup */
+    #lv-profile-popup { width: 210px; }
+
+    /* Corner ribbon */
+    .corner-ribbon {
+        font-size: 0.65rem;
+        width: 140px;
+        top: 26px;
+        right: -36px;
+    }
+}
+
+/* ============================================================
+   VERY SMALL PHONES (below 360px)
+   Old Redmi, old Samsung A series, old Vivo Y series, etc.
+   ============================================================ */
+@media screen and (max-width: 359px) {
+    .main-title-h1 { font-size: 1.5em; }
+    .logo { font-size: 1.1em; }
+    .nav-actions .cta-button { padding: 5px 7px; font-size: 0.7em; }
+    .generation-controls { padding: 12px; }
+    #promptInput { height: 60px; font-size: 0.88em; }
+    .section-heading { font-size: 1.4em; }
+    .gallery-grid img { height: 100px; }
+    #bgm-controls { width: 180px; }
+    .modal-content { padding: 14px; }
+    .plan-card .price { font-size: 2.2em; }
+}
+
+/* ============================================================
+   iPhone specific fixes (notch, dynamic island, safe areas)
+   iPhone X, XS, XR, 11, 12, 13, 14, 15, 16 series
+   ============================================================ */
+@supports (padding-top: env(safe-area-inset-top)) {
+    header {
+        padding-top: max(15px, env(safe-area-inset-top));
+        padding-left: max(16px, env(safe-area-inset-left));
+        padding-right: max(16px, env(safe-area-inset-right));
+    }
+    #bgm-player-container {
+        bottom: max(20px, env(safe-area-inset-bottom));
+        right: max(20px, env(safe-area-inset-right));
+    }
+    .cookies-popup {
+        bottom: max(20px, env(safe-area-inset-bottom));
+    }
+    footer {
+        padding-bottom: max(20px, env(safe-area-inset-bottom));
+    }
+}
+
+/* ============================================================
+   LANDSCAPE MODE — phones in landscape
+   ============================================================ */
+@media screen and (max-width: 900px) and (orientation: landscape) {
+    .main-title-h1 {
+        font-size: 2em;
+        margin: 20px 0 16px;
+    }
+    .generation-controls {
+        padding: 16px;
+        margin: 12px auto;
+    }
+    .options-grid {
+        flex-direction: row;
+        flex-wrap: wrap;
+    }
+    .placeholder-image {
+        min-height: 180px;
+    }
+    #bgm-controls {
+        bottom: 52px;
+        right: 0;
+    }
+    header { padding: 8px 16px; }
+}
+
+/* ============================================================
+   HIGH DPI / RETINA SCREENS
+   iPhone Retina, Samsung AMOLED, MacBook Retina
+   ============================================================ */
+@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
+    .logo {
+        -webkit-font-smoothing: antialiased;
+    }
+    .cta-button {
+        -webkit-font-smoothing: antialiased;
+    }
+}
+
+/* ============================================================
+   TOUCH DEVICE improvements
+   All touch phones and tablets
+   ============================================================ */
+@media (hover: none) and (pointer: coarse) {
+    /* Larger tap targets */
+    .cta-button {
+        min-height: 44px;
+    }
+    .tab-button {
+        min-height: 44px;
+    }
+    .close-btn {
+        min-width: 44px;
+        min-height: 44px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    .lv-profile-menu li {
+        padding: 13px 16px;
+    }
+    #bgm-controls button {
+        min-height: 36px;
+        min-width: 36px;
+    }
+    /* Remove hover effects that don't work on touch */
+    .gallery-grid img:hover {
+        transform: none;
+    }
+    .plan-card:hover {
+        transform: none;
+    }
+    .cta-button:hover {
+        transform: none;
+    }
+}
+
+/* ============================================================
+   PRINT (just in case)
+   ============================================================ */
+@media print {
+    header, footer, #bgm-player-container,
+    .cookies-popup, .modal, nav .nav-actions { display: none !important; }
+    main { max-width: 100%; padding: 0; }
+    .main-title-h1 { color: #000; text-shadow: none; }
+}
