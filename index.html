@@ -31,9 +31,9 @@
     <input type="text" id="promptInput" placeholder=" " autocomplete="off">
     <label for="promptInput" class="prompt-label">Enter your prompt...</label>
     <div id="examplePromptText">A neon-lit cyberpunk street with a flying taxi...</div>
-    <button id="enhancePromptBtn" title="Enhance Prompt with AI">
-        <i class="fas fa-magic"></i> Enhance
-    </button>
+    <button id="enhancePromptBtn" title="Enhance the prompt" aria-label="Enhance Prompt">
+    <i class="fas fa-wand-magic-sparkles"></i>
+</button>
 </div>
 
 <!-- Batch count (Ultimate only) -->
@@ -115,79 +115,106 @@
         <hr class="gallery-divider">
 
         <section class="style-gallery-container">
-            <h2 class="section-heading">Explore AI Art Styles</h2>
-            <p class="section-subtext">Find inspiration and preview the quality of our models.</p>
+    <h2 class="section-heading">Explore AI Art Styles</h2>
+    <p class="section-subtext">Find inspiration and preview the quality of our models.</p>
 
-            <div class="style-group">
-                <h3>Free Styles (Free Plan)</h3>
-                <div class="gallery-grid">
-                    <figure class="style-card">
-                        <img src="photorealism.jpg" alt="Photorealism">
-                        <figcaption>Photorealism</figcaption>
-                    </figure>
-                    <figure class="style-card">
-                        <img src="3drender.jpg" alt="3D Render">
-                        <figcaption>3D Render</figcaption>
-                    </figure>
-                    <figure class="style-card">
-                        <img src="pencilsketch.jpg" alt="Pencil Sketch">
-                        <figcaption>Pencil Sketch</figcaption>
-                    </figure>
-                    <figure class="style-card">
-                        <img src="pixelart.jpg" alt="8-bit Pixel Art">
-                        <figcaption>Pixel Art</figcaption>
-                    </figure>
-                    <figure class="style-card">
-                        <img src="watercolorpainting.jpg" alt="Watercolor Sketch">
-                        <figcaption>Watercolor Sketch</figcaption>
-                    </figure>
-                </div>
+    <!-- FREE STYLES -->
+    <div class="style-group">
+        <h3>Free Styles (Free Plan)</h3>
+        <div class="gallery-scroll-wrapper">
+            <button class="gallery-arrow gallery-arrow-left" onclick="scrollGallery(this, -1)">
+                <i class="fas fa-chevron-left"></i>
+            </button>
+            <div class="gallery-grid scrollable-gallery">
+                <figure class="style-card">
+                    <img src="photorealism.jpg" alt="Photorealism">
+                    <figcaption>Photorealism</figcaption>
+                </figure>
+                <figure class="style-card">
+                    <img src="3drender.jpg" alt="3D Render">
+                    <figcaption>3D Render</figcaption>
+                </figure>
+                <figure class="style-card">
+                    <img src="pencilsketch.jpg" alt="Pencil Sketch">
+                    <figcaption>Pencil Sketch</figcaption>
+                </figure>
+                <figure class="style-card">
+                    <img src="pixelart.jpg" alt="8-bit Pixel Art">
+                    <figcaption>Pixel Art</figcaption>
+                </figure>
+                <figure class="style-card">
+                    <img src="watercolorpainting.jpg" alt="Watercolor Sketch">
+                    <figcaption>Watercolor Sketch</figcaption>
+                </figure>
             </div>
-            
-            <hr class="gallery-divider">
+            <button class="gallery-arrow gallery-arrow-right" onclick="scrollGallery(this, 1)">
+                <i class="fas fa-chevron-right"></i>
+            </button>
+        </div>
+    </div>
 
-            <div class="style-group" id="premium-plans">
-                <h3>Pro Styles (Pro Plan Needed)</h3>
-                <div class="gallery-grid">
-                    <figure class="style-card">
-                        <img src="cyberpunkcity.jpg" alt="Cyberpunk City">
-                        <figcaption>Cyberpunk City</figcaption>
-                    </figure>
-                    <figure class="style-card">
-                        <img src="oilpainting.jpg" alt="Classical Oil Painting">
-                        <figcaption>Oil Painting</figcaption>
-                    </figure>
-                    <figure class="style-card">
-                        <img src="anime.jpg" alt="Anime Illustration">
-                        <figcaption>Anime</figcaption>
-                    </figure>
-                    <figure class="style-card">
-                        <img src="steampunk.jpg" alt="Steampunk Engine">
-                        <figcaption>Steampunk</figcaption>
-                    </figure>
-                </div>
+    <hr class="gallery-divider">
+
+    <!-- PRO STYLES -->
+    <div class="style-group" id="premium-plans">
+        <h3>Pro Styles (Pro Plan Needed)</h3>
+        <div class="gallery-scroll-wrapper">
+            <button class="gallery-arrow gallery-arrow-left" onclick="scrollGallery(this, -1)">
+                <i class="fas fa-chevron-left"></i>
+            </button>
+            <div class="gallery-grid scrollable-gallery">
+                <figure class="style-card">
+                    <img src="cyberpunkcity.jpg" alt="Cyberpunk City">
+                    <figcaption>Cyberpunk City</figcaption>
+                </figure>
+                <figure class="style-card">
+                    <img src="oilpainting.jpg" alt="Classical Oil Painting">
+                    <figcaption>Oil Painting</figcaption>
+                </figure>
+                <figure class="style-card">
+                    <img src="anime.jpg" alt="Anime Illustration">
+                    <figcaption>Anime</figcaption>
+                </figure>
+                <figure class="style-card">
+                    <img src="steampunk.jpg" alt="Steampunk Engine">
+                    <figcaption>Steampunk</figcaption>
+                </figure>
             </div>
+            <button class="gallery-arrow gallery-arrow-right" onclick="scrollGallery(this, 1)">
+                <i class="fas fa-chevron-right"></i>
+            </button>
+        </div>
+    </div>
 
-            <hr class="gallery-divider">
+    <hr class="gallery-divider">
 
-            <div class="style-group" id="premium-plans">
-                <h3>Ultimate Styles (Ultimate Plan Needed)</h3>
-                <div class="gallery-grid">
-                    <figure class="style-card">
-                        <img src="vaporwave.jpg" alt="Vaporwave Aesthetic">
-                        <figcaption>Vaporwave</figcaption>
-                    </figure>
-                    <figure class="style-card">
-                        <img src="lowpoly3d.jpg" alt="Abstract Low-Poly 3D">
-                        <figcaption>Low-Poly 3D</figcaption>
-                    </figure>
-                    <figure class="style-card">
-                        <img src="80synthwave.jpg" alt="80s Synthwave">
-                        <figcaption>80s Synthwave</figcaption>
-                    </figure>
-                </div>
+    <!-- ULTIMATE STYLES -->
+    <div class="style-group" id="premium-plans">
+        <h3>Ultimate Styles (Ultimate Plan Needed)</h3>
+        <div class="gallery-scroll-wrapper">
+            <button class="gallery-arrow gallery-arrow-left" onclick="scrollGallery(this, -1)">
+                <i class="fas fa-chevron-left"></i>
+            </button>
+            <div class="gallery-grid scrollable-gallery">
+                <figure class="style-card">
+                    <img src="vaporwave.jpg" alt="Vaporwave Aesthetic">
+                    <figcaption>Vaporwave</figcaption>
+                </figure>
+                <figure class="style-card">
+                    <img src="lowpoly3d.jpg" alt="Abstract Low-Poly 3D">
+                    <figcaption>Low-Poly 3D</figcaption>
+                </figure>
+                <figure class="style-card">
+                    <img src="80synthwave.jpg" alt="80s Synthwave">
+                    <figcaption>80s Synthwave</figcaption>
+                </figure>
             </div>
-        </section>
+            <button class="gallery-arrow gallery-arrow-right" onclick="scrollGallery(this, 1)">
+                <i class="fas fa-chevron-right"></i>
+            </button>
+        </div>
+    </div>
+</section>
         
         <section class="premium-plans-section">
             <h2 class="section-heading">Ready for Unlimited Creativity?</h2>
